@@ -15,11 +15,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -34,6 +37,7 @@ import com.sundroid.sundroid.screens.JobScreen
 import com.sundroid.sundroid.screens.StaffScreen
 import com.sundroid.sundroid.ui.theme.SundroidTheme
 import com.sundroid.sundroid.ui.theme.screens.SplashScreen
+import com.sundroid.sundroid.viewmodel.SundroidViewModel
 
 
 class MainActivity : ComponentActivity() {
@@ -47,6 +51,10 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
+            val viewModel: SundroidViewModel = viewModel()
+            val drawerState = rememberDrawerState(DrawerValue.Closed)
+            val scope = rememberCoroutineScope()
+
             SundroidTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -68,53 +76,95 @@ class MainActivity : ComponentActivity() {
                     )
 
 
-                    Scaffold(
-                        topBar = {
-                            CenterAlignedTopAppBar(
-                                modifier = Modifier.background(MaterialTheme.colorScheme.secondary),
-                                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.secondary, titleContentColor = Color.White, actionIconContentColor = Color.White, navigationIconContentColor = Color.White),
-                                title = {
-                                    Text(
-                                        "Centered TopAppBar",
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
-                                },
-                                navigationIcon = {
-                                    IconButton(onClick = { /* doSomething() */ }) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Menu,
-                                            contentDescription = "Localized description"
-                                        )
-                                    }
-                                },
-                                actions = {
-                                    IconButton(onClick = { /* doSomething() */ }) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Favorite,
-                                            contentDescription = "Localized description"
-                                        )
-                                    }
-                                }
-                            )
-                        },
-                        bottomBar = { AppBottomNavigation(navController = navController, items = bottomNavigationItems) },
-                        content = { innerPadding ->
 
 
-                                    Box(modifier =
-                                    Modifier
-                                        .fillMaxSize()
-                                        .padding(innerPadding)
 
-                                    ){
-                                        Navigation(navController = navController, items = bottomNavigationItems )
-                                    }
-
-
-                        }
+                    val items = listOf(
+                        "Item 1",
+                        "Item 2",
+                        "Item 3"
                     )
 
+
+
+                  ModalNavigationDrawer(drawerContent = {   ModalDrawerSheet(
+
+
+
+                      content = {
+                          Text("Option 1")
+                          Text("Option 2")
+                          Text("Option 3")
+                          Text("Option 4")
+                          Text("Option 5")
+
+                      }
+                      )},
+                      drawerState = drawerState,
+
+
+                    content =
+                    {
+                        Scaffold(
+
+                            topBar = {
+                                println("Sundroid Current route ${currentRoute(navController = navController)}")
+                                if(currentRoute(navController = navController)!="splash_screen")
+                                    CenterAlignedTopAppBar(
+                                        modifier = Modifier.background(MaterialTheme.colorScheme.secondary),
+                                        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.secondary, titleContentColor = Color.White, actionIconContentColor = Color.White, navigationIconContentColor = Color.White),
+                                        title = {
+
+                                            Text(
+                                                viewModel.appBarTitle,
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis
+                                            )
+                                        },
+                                        navigationIcon = {
+                                            IconButton(onClick = { /* doSomething() */ }) {
+                                                Icon(
+                                                    imageVector = Icons.Filled.Menu,
+                                                    contentDescription = "Localized description"
+                                                )
+                                            }
+                                        },
+                                        actions = {
+                                            IconButton(onClick = { /* doSomething() */ }) {
+                                                Icon(
+                                                    imageVector = Icons.Filled.Favorite,
+                                                    contentDescription = "Localized description"
+                                                )
+                                            }
+                                        }
+                                    )
+                            },
+
+                            bottomBar = {
+                                if(currentRoute(navController = navController)!="splash_screen")
+                                    AppBottomNavigation(navController = navController, items = bottomNavigationItems)
+                            },
+                            content = { innerPadding ->
+
+
+
+                                Box(modifier =
+                                Modifier
+                                    .fillMaxSize()
+                                    .padding(innerPadding)
+
+                                ){
+                                    Navigation(
+                                        navController = navController,
+                                        viewModel = viewModel
+                                    )
+                                }
+
+
+                            }
+                        )
+                    }
+                  )
 
 
 
@@ -157,11 +207,10 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalAnimationApi::class)
     @Composable
-    fun Navigation(navController: NavHostController,
-                   items: List<Screen>) {
+    fun Navigation(navController: NavHostController, viewModel: SundroidViewModel) {
 
 
-
+     
 
 
         AnimatedNavHost(navController = navController,
@@ -176,17 +225,25 @@ class MainActivity : ComponentActivity() {
             // Main Screen
             composable(getString(R.string.job_screen_route),  enterTransition = {  slideInHorizontally (animationSpec = tween(200)) },
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
+                viewModel.appBarTitle = stringResource(id = R.string.jobs)
                 JobScreen()
             }
             composable(getString(R.string.staff_screen_route),  enterTransition = {  slideInHorizontally (animationSpec = tween(200)) },
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
+                viewModel.appBarTitle  = stringResource(id = R.string.staff)
                 StaffScreen()
             }
             composable(getString(R.string.dashboard_route),  enterTransition = {  slideInHorizontally (animationSpec = tween(200)) },
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
+                viewModel.appBarTitle = stringResource(id = R.string.home)
                 DashBoard()
             }
         }
+    }
+    @Composable
+    public fun currentRoute(navController: NavHostController): String? {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        return navBackStackEntry?.destination?.route 
     }
 }
 

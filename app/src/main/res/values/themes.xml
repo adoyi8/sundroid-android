@@ -2,6 +2,6 @@
 <resources>
 
     <style name="Theme.Sundroid" parent="android:Theme.Material.Light.NoActionBar" >
-        <item name="android:windowLightNavigation">true</item>
+
     </style>
 </resources>

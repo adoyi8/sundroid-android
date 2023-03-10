@@ -2,12 +2,15 @@ package com.sundroid.sundroid.screens
 
 
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.*
+import androidx.compose.foundation.Image
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -24,7 +27,7 @@ fun AppBottomNavigation(navController: NavHostController,
              val currentRoute = currentRoute(navController)
              items.forEach { screen ->
                  NavigationBarItem(
-                     icon = {  Icon(Icons.Filled.Home, "Home", tint = Color.White)},
+                     icon = { Image(painter = painterResource(id = screen.icon), contentDescription = stringResource(id = screen.resourceId)) },
                      label = { Text(stringResource(id = screen.resourceId), color = Color.White) },
                      selected = currentRoute == screen.route,
                      // This hides the title for the unselected items

@@ -36,18 +36,25 @@ fun SplashScreen(navController: NavController) {
 
 
 
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = androidx.compose.ui.Alignment.Center
+    ) {
+        Row(horizontalArrangement = Arrangement.Center) {
+            SplashScreenText(text = "S", visibility =sState )
+            SplashScreenText(text = "U", visibility =uState )
+            SplashScreenText(text = "N", visibility =nState )
+            SplashScreenText(text = "D", visibility =dState )
+            SplashScreenText(text = "R", visibility =rState )
+            SplashScreenText(text = "O", visibility =oState )
+            SplashScreenText(text = "I", visibility =iState )
+            SplashScreenText(text = "D", visibility =d2State )
 
-    Row(horizontalArrangement = Arrangement.Center) {
-        SplashScreenText(text = "S", visibility =sState )
-        SplashScreenText(text = "U", visibility =uState )
-        SplashScreenText(text = "N", visibility =nState )
-        SplashScreenText(text = "D", visibility =dState )
-        SplashScreenText(text = "R", visibility =rState )
-        SplashScreenText(text = "O", visibility =oState )
-        SplashScreenText(text = "I", visibility =iState )
-        SplashScreenText(text = "D", visibility =d2State )
-
+        }
     }
+
+
+
 
 
     LaunchedEffect(key1 = true) {
