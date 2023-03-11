@@ -1,4 +1,4 @@
-package com.sundroid.sundroid.data
+package com.sundroid.sundroid.models
 
 data class GoogleUserModel(
     val name: String?,

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sundroid.sundroid.data
+package com.sundroid.sundroid.practice
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 import com.sundroid.sundroid.R
+import com.sundroid.sundroid.data.HomeScreen
 import com.sundroid.sundroid.viewmodel.MarsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

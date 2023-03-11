@@ -53,6 +53,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val viewModel: SundroidViewModel = viewModel()
+
             val drawerState = rememberDrawerState(DrawerValue.Closed)
             val scope = rememberCoroutineScope()
 

@@ -16,7 +16,6 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
@@ -83,30 +82,13 @@ dependencies {
 
     implementation "androidx.navigation:navigation-compose:1.0.0-alpha01"
     implementation "com.google.accompanist:accompanist-navigation-animation:0.21.1-beta"
-   // implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$rootProject.ext.versions.lifecycleCompose"
 
-    // FOR ROOM
-    //implementation "androidx.room:room-runtime:$rootProject.ext.versions.room"
-    //kapt "androidx.room:room-compiler:$rootProject.ext.versions.room"
-    // optional - Kotlin Extensions and Coroutines support for Room
-    //implementation "androidx.room:room-ktx:$rootProject.ext.versions.room"
-    // END FOR ROOM
 
-    // MOSHI
-    //implementation "com.squareup.moshi:moshi:$rootProject.ext.versions.moshi"
-    //kapt "com.squareup.moshi:moshi-kotlin-codegen:$rootProject.ext.versions.moshi"
-    // END FOR MOSHI
 
-    // FOR NAVIGATION
-    // END FOR NAVIGATION
 
-    // FOR WORK MANAGER
-    //implementation "androidx.work:work-runtime-ktx:$rootProject.ext.versions.workManager"
-    //androidTestImplementation "androidx.work:work-testing:$rootProject.ext.versions.workManager"
-    // END FOR WORK MANAGER
 
-    // FOR LOGGING
-   // implementation "com.jakewharton.timber:timber:$rootProject.ext.versions.timber"
+
+
 
     def room_version = "2.5.0"
 

@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.sundroid.sundroid.data.GoogleUserModel
+import com.sundroid.sundroid.models.GoogleUserModel
 import kotlinx.coroutines.launch
 
 class SignInGoogleViewModel(application: Application) : AndroidViewModel(application) {
