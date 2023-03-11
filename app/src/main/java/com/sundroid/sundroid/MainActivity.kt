@@ -38,6 +38,7 @@ import com.sundroid.sundroid.screens.StaffScreen
 import com.sundroid.sundroid.ui.theme.SundroidTheme
 import com.sundroid.sundroid.ui.theme.screens.SplashScreen
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
+import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
@@ -108,7 +109,7 @@ class MainActivity : ComponentActivity() {
                         Scaffold(
 
                             topBar = {
-                                println("Sundroid Current route ${currentRoute(navController = navController)}")
+
                                 if(currentRoute(navController = navController)!="splash_screen")
                                     CenterAlignedTopAppBar(
                                         modifier = Modifier.background(MaterialTheme.colorScheme.secondary),
@@ -122,7 +123,9 @@ class MainActivity : ComponentActivity() {
                                             )
                                         },
                                         navigationIcon = {
-                                            IconButton(onClick = { /* doSomething() */ }) {
+                                            IconButton(onClick = {scope.launch {
+                                                drawerState.open()
+                                            }}) {
                                                 Icon(
                                                     imageVector = Icons.Filled.Menu,
                                                     contentDescription = "Localized description"
@@ -130,7 +133,7 @@ class MainActivity : ComponentActivity() {
                                             }
                                         },
                                         actions = {
-                                            IconButton(onClick = { /* doSomething() */ }) {
+                                            IconButton(onClick = {  }) {
                                                 Icon(
                                                     imageVector = Icons.Filled.Favorite,
                                                     contentDescription = "Localized description"
