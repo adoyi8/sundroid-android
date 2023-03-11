@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.google.android.gms.common.api.ApiException
 import com.sundroid.sundroid.R
 import com.sundroid.sundroid.google_auth.AuthResultContract
@@ -18,7 +19,7 @@ import com.sundroid.sundroid.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun AuthScreen(
+fun AuthScreen(navController: NavController,
     authViewModel: AuthViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()

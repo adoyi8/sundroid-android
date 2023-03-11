@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
@@ -29,20 +28,21 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.sundroid.sundroid.data.AuthScreen
 import com.sundroid.sundroid.models.Screen
-import com.sundroid.sundroid.practice.PracticeViewModel
 import com.sundroid.sundroid.screens.AppBottomNavigation
 import com.sundroid.sundroid.screens.DashBoard
 import com.sundroid.sundroid.screens.JobScreen
 import com.sundroid.sundroid.screens.StaffScreen
 import com.sundroid.sundroid.ui.theme.SundroidTheme
 import com.sundroid.sundroid.ui.theme.screens.SplashScreen
+import com.sundroid.sundroid.viewmodel.AuthViewModel
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
 import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
-    private val authViewModel: PracticeViewModel by viewModels()
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class,
         ExperimentalLayoutApi::class
@@ -53,6 +53,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val viewModel: SundroidViewModel = viewModel()
+            val authViewModel: AuthViewModel = viewModel()
 
             val drawerState = rememberDrawerState(DrawerValue.Closed)
             val scope = rememberCoroutineScope()
@@ -160,7 +161,7 @@ class MainActivity : ComponentActivity() {
                                 ){
                                     Navigation(
                                         navController = navController,
-                                        viewModel = viewModel
+                                        viewModel = viewModel, authViewModel
                                     )
                                 }
 
@@ -211,7 +212,7 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalAnimationApi::class)
     @Composable
-    fun Navigation(navController: NavHostController, viewModel: SundroidViewModel) {
+    fun Navigation(navController: NavHostController, viewModel: SundroidViewModel, authViewModel: AuthViewModel) {
 
 
      
@@ -223,7 +224,7 @@ class MainActivity : ComponentActivity() {
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) })
 
              {
-                SplashScreen(navController = navController)
+                SplashScreen(navController = navController, viewModel = viewModel)
 
             }
             // Main Screen
@@ -240,7 +241,12 @@ class MainActivity : ComponentActivity() {
             composable(getString(R.string.dashboard_route),  enterTransition = {  slideInHorizontally (animationSpec = tween(200)) },
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
                 viewModel.appBarTitle = stringResource(id = R.string.home)
-                DashBoard()
+                DashBoard(viewModel)
+            }
+            composable(getString(R.string.auth_screen_route),  enterTransition = {  slideInHorizontally (animationSpec = tween(200)) },
+                exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
+                viewModel.appBarTitle = stringResource(id = R.string.auth)
+                AuthScreen(navController = navController, authViewModel = authViewModel)
             }
         }
     }

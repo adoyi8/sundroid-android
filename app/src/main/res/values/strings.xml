@@ -33,4 +33,6 @@
     <string name="dashboard_route">dashboard_screen</string>
     <string name="splash_screen_route">splash_screen</string>
     <string name="jobs">Jobs</string>
+    <string name="auth_screen_route">auth_screen</string>
+    <string name="auth">Sign In</string>
 </resources>
