@@ -39,6 +39,7 @@ import com.sundroid.sundroid.ui.theme.screens.SplashScreen
 import com.sundroid.sundroid.viewmodel.AuthViewModel
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonNull.content
 
 
 class MainActivity : ComponentActivity() {
@@ -70,26 +71,6 @@ class MainActivity : ComponentActivity() {
                         Screen.Jobs,
                         Screen.Staff
                     )
-                    val colors = listOf(
-                        Color(0xFFffd7d7.toInt()),
-                        Color(0xFFffe9d6.toInt()),
-                        Color(0xFFfffbd0.toInt()),
-                        Color(0xFFe3ffd9.toInt()),
-                        Color(0xFFd0fff8.toInt())
-                    )
-
-
-
-
-
-                    val items = listOf(
-                        "Item 1",
-                        "Item 2",
-                        "Item 3"
-                    )
-
-
-
                   ModalNavigationDrawer(drawerContent = {   ModalDrawerSheet(
 
 
@@ -112,10 +93,18 @@ class MainActivity : ComponentActivity() {
 
                             topBar = {
 
-                                if(currentRoute(navController = navController)!="splash_screen")
+                                if (currentRoute(navController = navController) != stringResource(id = R.string.splash_screen_route) && currentRoute(
+                                        navController = navController
+                                    ) != stringResource(id = R.string.auth_screen_route)
+                                ){
                                     CenterAlignedTopAppBar(
                                         modifier = Modifier.background(MaterialTheme.colorScheme.secondary),
-                                        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = MaterialTheme.colorScheme.secondary, titleContentColor = Color.White, actionIconContentColor = Color.White, navigationIconContentColor = Color.White),
+                                        colors = TopAppBarDefaults.smallTopAppBarColors(
+                                            containerColor = MaterialTheme.colorScheme.secondary,
+                                            titleContentColor = Color.White,
+                                            actionIconContentColor = Color.White,
+                                            navigationIconContentColor = Color.White
+                                        ),
                                         title = {
 
                                             Text(
@@ -125,9 +114,11 @@ class MainActivity : ComponentActivity() {
                                             )
                                         },
                                         navigationIcon = {
-                                            IconButton(onClick = {scope.launch {
-                                                drawerState.open()
-                                            }}) {
+                                            IconButton(onClick = {
+                                                scope.launch {
+                                                    drawerState.open()
+                                                }
+                                            }) {
                                                 Icon(
                                                     imageVector = Icons.Filled.Menu,
                                                     contentDescription = "Localized description"
@@ -135,7 +126,7 @@ class MainActivity : ComponentActivity() {
                                             }
                                         },
                                         actions = {
-                                            IconButton(onClick = {  }) {
+                                            IconButton(onClick = { }) {
                                                 Icon(
                                                     imageVector = Icons.Filled.Favorite,
                                                     contentDescription = "Localized description"
@@ -143,10 +134,29 @@ class MainActivity : ComponentActivity() {
                                             }
                                         }
                                     )
-                            },
+                            }else if(currentRoute(navController = navController)== stringResource(id = R.string.auth_screen_route)){
+                                    CenterAlignedTopAppBar(
+                                        modifier = Modifier.background(MaterialTheme.colorScheme.secondary),
+                                        colors = TopAppBarDefaults.smallTopAppBarColors(
+                                            containerColor = MaterialTheme.colorScheme.secondary,
+                                            titleContentColor = Color.White,
+                                            actionIconContentColor = Color.White,
+                                            navigationIconContentColor = Color.White
+                                        ),
+                                        title = {
+
+                                            Text(
+                                                viewModel.appBarTitle,
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis
+                                            )
+                                        },
+
+                                    )
+                            }},
 
                             bottomBar = {
-                                if(currentRoute(navController = navController)!="splash_screen")
+                                if(currentRoute(navController = navController)!= stringResource(id = R.string.splash_screen_route) && currentRoute(navController = navController)!= stringResource(id = R.string.auth_screen_route))
                                     AppBottomNavigation(navController = navController, items = bottomNavigationItems)
                             },
                             content = { innerPadding ->

@@ -33,7 +33,6 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     val isError by mutableStateOf(false)
 
 
-
     var appBarTitle by mutableStateOf("Sundroid")
     val users: Flow<List<RoomUserEntity>> = userRepository.users
 

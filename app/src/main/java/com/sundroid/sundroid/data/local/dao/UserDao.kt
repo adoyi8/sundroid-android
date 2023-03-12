@@ -15,4 +15,6 @@ interface UserDao {
 
     @Delete
     suspend fun deleteUser(user: RoomUserEntity)
+    @Query("DELETE FROM users")
+    suspend fun deleteAllUsers()
 }

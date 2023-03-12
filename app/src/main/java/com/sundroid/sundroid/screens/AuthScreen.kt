@@ -31,6 +31,7 @@ fun AuthScreen(navController: NavController,
         rememberLauncherForActivityResult(contract = AuthResultContract()) { task ->
             try {
                 val account = task?.getResult(ApiException::class.java)
+                account.ser
                 if (account == null) {
                     text = "Google sign in failed"
                 } else {
