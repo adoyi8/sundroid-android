@@ -18,7 +18,7 @@ import com.sundroid.sundroid.models.RoomUserEntity
 
 
 
-@Database(entities = [RoomUserEntity::class], version = 1, exportSchema = false)
+@Database(entities = [RoomUserEntity::class], version = 2, exportSchema = false)
 abstract class SundroidLocalDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
@@ -32,7 +32,7 @@ abstract class SundroidLocalDatabase : RoomDatabase() {
                     context.applicationContext,
                     SundroidLocalDatabase::class.java,
                     "sundroid_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 instance
             }

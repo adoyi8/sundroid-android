@@ -29,7 +29,7 @@ fun PracticeScreen(
         errorText = text,
         onClick = {
             coroutineScope.launch {
-                authViewModel.signIn("email","name")
+
             }
 
         },

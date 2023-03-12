@@ -251,12 +251,12 @@ class MainActivity : ComponentActivity() {
             composable(getString(R.string.dashboard_route),  enterTransition = {  slideInHorizontally (animationSpec = tween(200)) },
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
                 viewModel.appBarTitle = stringResource(id = R.string.home)
-                DashBoard(viewModel)
+                DashBoard(viewModel=viewModel, navController = navController)
             }
             composable(getString(R.string.auth_screen_route),  enterTransition = {  slideInHorizontally (animationSpec = tween(200)) },
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
                 viewModel.appBarTitle = stringResource(id = R.string.auth)
-                AuthScreen(navController = navController, authViewModel = authViewModel)
+                AuthScreen(navController = navController, authViewModel = authViewModel, viewModel=viewModel)
             }
         }
     }

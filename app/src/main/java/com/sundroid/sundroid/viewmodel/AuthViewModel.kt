@@ -10,8 +10,5 @@ class AuthViewModel : ViewModel() {
     val user: StateFlow<User?> = _user
 
 
-    suspend fun signIn(email: String, displayName: String) {
-        println("Debby "+ user.value?.displayName)
-        _user.value = User(email, user.value?.displayName + displayName)
-    }
+
 }

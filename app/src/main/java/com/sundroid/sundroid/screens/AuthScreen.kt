@@ -15,12 +15,15 @@ import androidx.navigation.NavController
 import com.google.android.gms.common.api.ApiException
 import com.sundroid.sundroid.R
 import com.sundroid.sundroid.google_auth.AuthResultContract
+import com.sundroid.sundroid.models.RoomUserEntity
+import com.sundroid.sundroid.models.User
 import com.sundroid.sundroid.viewmodel.AuthViewModel
+import com.sundroid.sundroid.viewmodel.SundroidViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun AuthScreen(navController: NavController,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel, viewModel: SundroidViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()
     var text by remember { mutableStateOf<String?>(null) }
@@ -31,23 +34,25 @@ fun AuthScreen(navController: NavController,
         rememberLauncherForActivityResult(contract = AuthResultContract()) { task ->
             try {
                 val account = task?.getResult(ApiException::class.java)
-                account.ser
+
                 if (account == null) {
                     text = "Google sign in failed"
                 } else {
                     coroutineScope.launch {
                         account.email?.let {
                             account.displayName?.let { it1 ->
-                                authViewModel.signIn(
-                                    email = it,
-                                    displayName = it1,
-                                )
+                                val user = RoomUserEntity(email = account.email, displayName = account.displayName, familyName = account.familyName, givenName = account.givenName,idToken= account.idToken,photoUrl = account.photoUrl.toString(),serverAuthCode= account.serverAuthCode)
+                                viewModel.insertUser(user)
+                                navController.navigate("dashboard_screen") {
+                                    popUpTo("auth_screen") { inclusive = true }
+
+                                }
                             }
                         }
                     }
                 }
             } catch (e: ApiException) {
-                text = "Google sign in failed"
+                text = "Google sign in failed ${e.message}"
             }
         }
 

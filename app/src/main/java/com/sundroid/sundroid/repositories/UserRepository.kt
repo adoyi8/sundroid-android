@@ -15,4 +15,7 @@ class UserRepository(private val userDao: UserDao) {
     suspend fun deleteUser(user: RoomUserEntity) {
         userDao.deleteUser(user)
     }
+    suspend fun deleteAllUsers() {
+        userDao.deleteAllUsers()
+    }
 }
