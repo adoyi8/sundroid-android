@@ -68,7 +68,7 @@ fun SplashScreen(navController: NavController, viewModel: SundroidViewModel) {
             d2State = !d2State
             delay(500)
 
-        var usersList = viewModel.users.collect {
+         viewModel.users.collect {
             if(it.isEmpty()) {
                 navController.navigate("auth_screen") {
                     popUpTo("splash_screen") { inclusive = true }

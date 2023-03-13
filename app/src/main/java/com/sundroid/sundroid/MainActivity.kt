@@ -39,7 +39,6 @@ import com.sundroid.sundroid.ui.theme.screens.SplashScreen
 import com.sundroid.sundroid.viewmodel.AuthViewModel
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.JsonNull.content
 
 
 class MainActivity : ComponentActivity() {
@@ -81,6 +80,9 @@ class MainActivity : ComponentActivity() {
                           Text("Option 3")
                           Text("Option 4")
                           Text("Option 5")
+                          Button(onClick = { viewModel}) {
+                              
+                          }
 
                       }
                       )},

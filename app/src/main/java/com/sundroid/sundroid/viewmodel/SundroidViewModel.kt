@@ -1,7 +1,6 @@
 package com.sundroid.sundroid.viewmodel
 
 import android.app.Application
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -32,7 +31,7 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     private val userRepository = UserRepository(userDao)
     val isLoading by mutableStateOf(false)
     val isError by mutableStateOf(false)
-    var currentUser =  mutableStateOf<RoomUserEntity?>(null);
+    var currentUser =  mutableStateOf<RoomUserEntity>(RoomUserEntity(1,"","","","","","",""));
 
 
     var appBarTitle by mutableStateOf("Sundroid")
@@ -55,7 +54,10 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
         userRepository.deleteAllUsers()
     }
     fun getCurrentUser() = viewModelScope.launch {
+        users.collect {
+            currentUser.value = it.first()
 
+        }
 
     }
 }

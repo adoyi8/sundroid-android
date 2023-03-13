@@ -9,7 +9,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.sundroid.sundroid.models.RoomUserEntity
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
@@ -24,6 +23,9 @@ fun DashBoard(viewModel: SundroidViewModel, navController: NavController) {
 
 
     LaunchedEffect(true) {
+
+        viewModel.getCurrentUser();
+        println("Enzo "+ viewModel.currentUser.value.email)
       if(viewModel.currentUser.value==null){
           navController.navigate("auth_screen") {
               popUpTo("splash_screen") { inclusive = true }
@@ -62,7 +64,7 @@ fun DashBoard(viewModel: SundroidViewModel, navController: NavController) {
                       }
                       Column() {
                           Text(text="Id Token")
-                          Text(text= viewModel.currentUser.value?.idToken!!)
+//                          Text(text= viewModel.currentUser.value?.idToken!!)
                       }
                       Column() {
                           Text(text="Photo Url")
@@ -70,7 +72,7 @@ fun DashBoard(viewModel: SundroidViewModel, navController: NavController) {
                       }
                       Column() {
                           Text(text="Server Auth Code")
-                          Text(text= viewModel.currentUser.value?.serverAuthCode!!)
+//                          Text(text= viewModel.currentUser.value?.serverAuthCode!!)
                       }
                   }
 
