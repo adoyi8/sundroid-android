@@ -8,6 +8,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -28,6 +30,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.sundroid.sundroid.custom_composables.SundroidAlertDialog
 import com.sundroid.sundroid.data.AuthScreen
 import com.sundroid.sundroid.models.DrawerItem
 import com.sundroid.sundroid.models.Screen
@@ -71,8 +74,14 @@ class MainActivity : ComponentActivity() {
                         Screen.Jobs,
                         Screen.Staff
                     )
-                    val items = listOf(DrawerItem(Icons.Default.Settings, "Settings"), DrawerItem(Icons.Default.Settings, "Settings"))
+                    val items = listOf(DrawerItem(R.drawable.settings, "Settings"), DrawerItem(R.drawable.logout, "Log Out"))
                     val selectedItem = remember { mutableStateOf(items[0]) }
+                    val openDialog = remember { mutableStateOf(false) }
+                    if(openDialog.value){
+
+                        SundroidAlertDialog(openDialog)
+
+                    }
                   ModalNavigationDrawer(
                       modifier = Modifier.width(50.dp),
                       drawerContent = {
@@ -90,12 +99,15 @@ class MainActivity : ComponentActivity() {
                                           Spacer(modifier = Modifier.height(25.dp))
                                           items.forEach { item ->
                                               NavigationDrawerItem(
-                                                  icon = {  Icon(item.icon, contentDescription = null) },
+                                                  icon = {  Image(painter = painterResource(id = item.icon), contentDescription = null)  },
                                                   label = { Text(item.title) },
                                                   selected = item == selectedItem.value,
                                                   onClick = {
                                                       scope.launch { drawerState.close() }
                                                       selectedItem.value = item
+                                                      if(item.title=="Log Out"){
+                                                         openDialog.value = true
+                                                      }
                                                   },
                                                   
                                               )
