@@ -25,6 +25,9 @@ fun AppBottomNavigation(navController: NavHostController,
 
          NavigationBar(containerColor = MaterialTheme.colorScheme.secondary, contentColor = Color.White) {
              val currentRoute = currentRoute(navController)
+
+
+
              items.forEach { screen ->
                  NavigationBarItem(
                      icon = { Image(painter = painterResource(id = screen.icon), contentDescription = stringResource(id = screen.resourceId)) },

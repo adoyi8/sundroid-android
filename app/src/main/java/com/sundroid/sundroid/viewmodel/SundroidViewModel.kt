@@ -55,7 +55,9 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     }
     fun getCurrentUser() = viewModelScope.launch {
         users.collect {
-            currentUser.value = it.first()
+            if(it.isNotEmpty()) {
+                currentUser.value = it.first()
+            }
 
         }
 
