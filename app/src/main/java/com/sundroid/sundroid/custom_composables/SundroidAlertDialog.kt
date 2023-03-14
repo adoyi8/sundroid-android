@@ -1,6 +1,7 @@
 package com.sundroid.sundroid.custom_composables
 
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
@@ -39,6 +40,7 @@ fun SundroidAlertDialog(openDialog: MutableState<Boolean>){
                     onClick = {
                         openDialog.value = false
                     }, modifier = Modifier.size(100.dp)
+                , shape = RoundedCornerShape(8.dp)
                 ) {
                     Text("Yes", style =MaterialTheme.typography.labelSmall)
                 }

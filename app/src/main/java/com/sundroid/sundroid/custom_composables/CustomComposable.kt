@@ -10,6 +10,14 @@ import androidx.compose.ui.unit.sp
 import com.sundroid.sundroid.ui.theme.Tilt
 
 
+
+
+
+
+
+
+
+
 @Composable
 fun SplashScreenText(text: String, visibility: Boolean){
     val color = MaterialTheme.colorScheme.primary
@@ -22,4 +30,9 @@ fun SplashScreenText(text: String, visibility: Boolean){
         Text(text = text, modifier = modifier, color = color, fontSize = textFontSize, fontFamily = Tilt, fontWeight = FontWeight.Bold)
 
     }
+}
+
+@Composable
+fun SundroidButton(){
+
 }
