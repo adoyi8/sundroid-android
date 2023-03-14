@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 class SundroidViewModel(application: Application) : AndroidViewModel(application) {
     private val userDao = SundroidLocalDatabase.getDatabase(application).userDao()
     private val userRepository = UserRepository(userDao)
-    val isLoading by mutableStateOf(false)
+    var isLoading by mutableStateOf(false)
     val isError by mutableStateOf(false)
     var currentUser =  mutableStateOf<RoomUserEntity>(RoomUserEntity(1,"","","","","","",""));
 
@@ -51,7 +51,10 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
         userRepository.deleteUser(user)
     }
     fun deleteAllUsers() = viewModelScope.launch {
+        isLoading = true;
         userRepository.deleteAllUsers()
+        println("delete all users called in sundroid viewmodel")
+        isLoading= false
     }
     fun getCurrentUser() = viewModelScope.launch {
         users.collect {
@@ -61,5 +64,10 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
 
         }
 
+    }
+
+    fun logOut()  = viewModelScope.launch{
+        println("Blessing 2 log out called in sundroid viewmodel")
+        deleteAllUsers()
     }
 }

@@ -79,7 +79,16 @@ class MainActivity : ComponentActivity() {
                     val openDialog = remember { mutableStateOf(false) }
                     if(openDialog.value){
 
-                        SundroidAlertDialog(openDialog)
+                        SundroidAlertDialog(openDialog, onYesClick = {
+                            openDialog.value = false
+                            viewModel.logOut()
+                            println("Blessing 4 Hello")
+                            navController.navigate("auth_screen") {
+                                popUpTo("splash_screen") { inclusive = true }
+
+                            }
+
+                        })
 
                     }
                   ModalNavigationDrawer(

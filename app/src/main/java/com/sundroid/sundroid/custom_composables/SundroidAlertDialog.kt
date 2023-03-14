@@ -1,18 +1,16 @@
 package com.sundroid.sundroid.custom_composables
 
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun SundroidAlertDialog(openDialog: MutableState<Boolean>){
+fun SundroidAlertDialog(openDialog: MutableState<Boolean>, onYesClick:()->Unit, onNoClick:()->Unit={}){
 
 
 
@@ -36,23 +34,18 @@ fun SundroidAlertDialog(openDialog: MutableState<Boolean>){
                 )
             },
             confirmButton = {
-                Button(
-                    onClick = {
-                        openDialog.value = false
-                    }, modifier = Modifier.size(100.dp)
-                , shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text("Yes", style =MaterialTheme.typography.labelSmall)
-                }
+
+                SundroidButton(
+                    onClick = onYesClick, text = "Yes"
+                )
             },
             dismissButton = {
-                Button(
+                SundroidButton(
                     onClick = {
                         openDialog.value = false
-                    },  modifier = Modifier.size(100.dp)
-                ) {
-                    Text("No")
-                }
+                        onNoClick
+                    }, text = "No"
+                )
             }
         )
     }

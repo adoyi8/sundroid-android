@@ -1,6 +1,7 @@
 package com.sundroid.sundroid.custom_composables
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +34,8 @@ fun SplashScreenText(text: String, visibility: Boolean){
 }
 
 @Composable
-fun SundroidButton(){
-
+fun SundroidButton(onClick: ()->Unit, text: String){
+ Button(onClick = onClick, shape = MaterialTheme.shapes.small) {
+     Text(text = text, style = MaterialTheme.typography.labelSmall)
+ }
 }
