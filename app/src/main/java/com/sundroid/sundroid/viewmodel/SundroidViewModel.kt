@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.sundroid.sundroid.data.local.dao.SundroidLocalDatabase
+import com.sundroid.sundroid.google_auth.getGoogleSignInClient
 import com.sundroid.sundroid.models.RoomUserEntity
 import com.sundroid.sundroid.repositories.UserRepository
 import kotlinx.coroutines.flow.Flow
@@ -42,7 +43,9 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
         userRepository.deleteAllUsers()
         userRepository.insertUser(user)
         val streamedUsers = users.collect {
-            currentUser.value = it.first()
+            if(it.isNotEmpty()) {
+                currentUser.value = it.first()
+            }
 
         }
     }
@@ -54,6 +57,7 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
         isLoading = true;
         userRepository.deleteAllUsers()
         println("delete all users called in sundroid viewmodel")
+
         isLoading= false
     }
     fun getCurrentUser() = viewModelScope.launch {
@@ -69,5 +73,6 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     fun logOut()  = viewModelScope.launch{
         println("Blessing 2 log out called in sundroid viewmodel")
         deleteAllUsers()
+
     }
 }

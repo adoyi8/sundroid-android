@@ -1,10 +1,8 @@
 package com.sundroid.sundroid.data
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.material3.ButtonDefaults.shape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,7 +14,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SignInButton(
     text: String,
-    loadingText: String = "Signing in...",
+    loadingText: String = "",
     icon: Painter,
     isLoading: Boolean = false,
     borderColor: Color = Color.LightGray,
@@ -29,31 +27,21 @@ fun SignInButton(
             enabled = !isLoading,
             onClick = onClick
         ),
-        shape = shape,
-        border = BorderStroke(width = 1.dp, color = borderColor),
-        color = backgroundColor
     ) {
-        Row(
-            modifier = Modifier
-                .padding(
-                    start = 12.dp,
-                    end = 16.dp,
-                    top = 12.dp,
-                    bottom = 12.dp
-                ),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+
         ) {
             Icon(
                 painter = icon,
                 contentDescription = "SignInButton",
                 tint = Color.Unspecified
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.height(300.dp))
 
-            Text(text = if (isLoading) loadingText else text)
             if (isLoading) {
-                Spacer(modifier = Modifier.width(16.dp))
+
                 CircularProgressIndicator(
                     modifier = Modifier
                         .height(16.dp)
@@ -62,6 +50,8 @@ fun SignInButton(
                     color = progressIndicatorColor
                 )
             }
+            Text(text = if (isLoading) loadingText else text)
+
         }
     }
 }

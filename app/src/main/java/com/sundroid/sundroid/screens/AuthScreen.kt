@@ -16,18 +16,15 @@ import com.google.android.gms.common.api.ApiException
 import com.sundroid.sundroid.R
 import com.sundroid.sundroid.google_auth.AuthResultContract
 import com.sundroid.sundroid.models.RoomUserEntity
-import com.sundroid.sundroid.models.User
-import com.sundroid.sundroid.viewmodel.AuthViewModel
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun AuthScreen(navController: NavController,
-    authViewModel: AuthViewModel, viewModel: SundroidViewModel
+fun AuthScreen(navController: NavController, viewModel: SundroidViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()
     var text by remember { mutableStateOf<String?>(null) }
-    val user by remember(authViewModel) { authViewModel.user }.collectAsState()
+
     val signInRequestCode = 1
 
     val authResultLauncher =
@@ -64,9 +61,6 @@ fun AuthScreen(navController: NavController,
         }
     )
 
-    user?.let {
-      //  HomeScreen(user = it)
-    }
 }
 
 
@@ -86,10 +80,10 @@ fun AuthView(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             SignInButton(
-                text = "Sign in with Google",
+                text = "",
                 loadingText = "Signing in...",
                 isLoading = isLoading,
-                icon = painterResource(id = R.drawable.ic_connection_error),
+                icon = painterResource(id = R.drawable.google_sign_in),
                 onClick = {
                     isLoading = true
                     onClick()

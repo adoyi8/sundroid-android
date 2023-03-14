@@ -1,5 +1,7 @@
 package com.sundroid.sundroid
 
+
+import CircularImage
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -32,6 +34,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.sundroid.sundroid.custom_composables.SundroidAlertDialog
 import com.sundroid.sundroid.data.AuthScreen
+import com.sundroid.sundroid.google_auth.getGoogleSignInClient
 import com.sundroid.sundroid.models.DrawerItem
 import com.sundroid.sundroid.models.Screen
 import com.sundroid.sundroid.screens.AppBottomNavigation
@@ -40,7 +43,6 @@ import com.sundroid.sundroid.screens.JobScreen
 import com.sundroid.sundroid.screens.StaffScreen
 import com.sundroid.sundroid.ui.theme.SundroidTheme
 import com.sundroid.sundroid.ui.theme.screens.SplashScreen
-import com.sundroid.sundroid.viewmodel.AuthViewModel
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
 import kotlinx.coroutines.launch
 
@@ -57,7 +59,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val viewModel: SundroidViewModel = viewModel()
-            val authViewModel: AuthViewModel = viewModel()
+
 
             val drawerState = rememberDrawerState(DrawerValue.Closed)
             val scope = rememberCoroutineScope()
@@ -83,12 +85,13 @@ class MainActivity : ComponentActivity() {
                             openDialog.value = false
                             viewModel.logOut()
                             println("Blessing 4 Hello")
+                            getGoogleSignInClient(this).signOut()
                             navController.navigate("auth_screen") {
                                 popUpTo("splash_screen") { inclusive = true }
 
                             }
 
-                        })
+                        }, icon = R.drawable.logout)
 
                     }
                   ModalNavigationDrawer(
@@ -173,12 +176,8 @@ class MainActivity : ComponentActivity() {
                                             }
                                         },
                                         actions = {
-                                            IconButton(onClick = { }) {
-                                                Icon(
-                                                    imageVector = Icons.Filled.Favorite,
-                                                    contentDescription = "Localized description"
-                                                )
-                                            }
+                                            CircularImage(viewModel.currentUser.value.photoUrl)
+                                            Spacer(modifier = Modifier.width(10.dp))
                                         }
                                     )
                             }else if(currentRoute(navController = navController)== stringResource(id = R.string.auth_screen_route)){
@@ -218,7 +217,7 @@ class MainActivity : ComponentActivity() {
                                 ){
                                     Navigation(
                                         navController = navController,
-                                        viewModel = viewModel, authViewModel
+                                        viewModel = viewModel
                                     )
                                 }
 
@@ -269,7 +268,7 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalAnimationApi::class)
     @Composable
-    fun Navigation(navController: NavHostController, viewModel: SundroidViewModel, authViewModel: AuthViewModel) {
+    fun Navigation(navController: NavHostController, viewModel: SundroidViewModel) {
 
 
      
@@ -303,7 +302,7 @@ class MainActivity : ComponentActivity() {
             composable(getString(R.string.auth_screen_route),  enterTransition = {  slideInHorizontally (animationSpec = tween(200)) },
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
                 viewModel.appBarTitle = stringResource(id = R.string.auth)
-                AuthScreen(navController = navController, authViewModel = authViewModel, viewModel=viewModel)
+                AuthScreen(navController = navController, viewModel=viewModel)
             }
         }
     }

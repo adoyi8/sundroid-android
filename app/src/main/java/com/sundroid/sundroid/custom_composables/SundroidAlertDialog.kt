@@ -1,16 +1,16 @@
 package com.sundroid.sundroid.custom_composables
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.foundation.Image
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.res.painterResource
+import com.sundroid.sundroid.R
 
 
 @Composable
-fun SundroidAlertDialog(openDialog: MutableState<Boolean>, onYesClick:()->Unit, onNoClick:()->Unit={}){
+fun SundroidAlertDialog(openDialog: MutableState<Boolean>, onYesClick:()->Unit, onNoClick:()->Unit={}, icon: Int= R.drawable.ic_warning){
 
 
 
@@ -24,7 +24,7 @@ fun SundroidAlertDialog(openDialog: MutableState<Boolean>, onYesClick:()->Unit, 
                 // onDismissRequest.
                 openDialog.value = false
             },
-            icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
+            icon = { Image(painter = painterResource(id = icon), contentDescription = null) },
             title = {
                 Text(text = "Log Out")
             },
@@ -50,3 +50,5 @@ fun SundroidAlertDialog(openDialog: MutableState<Boolean>, onYesClick:()->Unit, 
         )
     }
 }
+
+

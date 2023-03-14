@@ -12,7 +12,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.sundroid.sundroid.R
 import com.sundroid.sundroid.data.SignInButton
-import com.sundroid.sundroid.models.User
 import kotlinx.coroutines.launch
 
 @Composable
@@ -21,7 +20,7 @@ fun PracticeScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     var text by remember { mutableStateOf<String?>(null) }
-    val user by remember(authViewModel) { authViewModel.user }.collectAsState()
+
     val signInRequestCode = 1
 
 
@@ -32,8 +31,8 @@ fun PracticeScreen(
 
             }
 
-        },
-        user,
+        }
+
     )
 
 
@@ -45,7 +44,7 @@ fun PracticeScreen(
 @Composable
 fun PracticeView(
     errorText: String?,
-    onClick: () -> Unit, user: User?
+    onClick: () -> Unit
 ) {
 
 
@@ -65,7 +64,7 @@ fun PracticeView(
                     onClick()
                 }
             )
-            Text("Name is "+ user?.displayName )
+            Text("Name is ")
 
             errorText?.let {
 
