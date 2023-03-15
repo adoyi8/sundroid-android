@@ -4,15 +4,13 @@ package com.sundroid.sundroid.screens
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.sundroid.sundroid.custom_composables.JobList
 import com.sundroid.sundroid.models.RoomUserEntity
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
 import kotlinx.coroutines.flow.flowOf
@@ -47,45 +45,7 @@ fun DashBoard(viewModel: SundroidViewModel, navController: NavController) {
         // Display an error message if there was an error loading the data
         Text(text = "Error loading data")
     } else {
-        // Display the list of users if it was loaded successfully
-
-                  Column() {
-                      Button(
-                          onClick = {
-
-                          }, modifier = Modifier.size(100.dp)
-                      ) {
-                          Text("Yes", style =MaterialTheme.typography.labelSmall)
-                      }
-                      Column() {
-                        Text(text="Name")
-                          Text(text= viewModel.currentUser.value?.displayName!!)
-                      }
-                      Column() {
-                          Text(text="Email")
-                          Text(text= viewModel.currentUser.value?.email!!)
-                      }
-                      Column() {
-                          Text(text="Family Name")
-                          Text(text= viewModel.currentUser.value?.familyName!!)
-                      }
-                      Column() {
-                          Text(text="Given Name")
-                          Text(text= viewModel.currentUser.value?.givenName!!)
-                      }
-                      Column() {
-                          Text(text="Id Token")
-//                          Text(text= viewModel.currentUser.value?.idToken!!)
-                      }
-                      Column() {
-                          Text(text="Photo Url")
-                          Text(text= viewModel.currentUser.value?.photoUrl!!)
-                      }
-                      Column() {
-                          Text(text="Server Auth Code")
-//                          Text(text= viewModel.currentUser.value?.serverAuthCode!!)
-                      }
-                  }
+        JobList(viewModel.jobs)
 
     }
 

@@ -7,7 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.sundroid.sundroid.data.local.dao.SundroidLocalDatabase
-import com.sundroid.sundroid.google_auth.getGoogleSignInClient
+import com.sundroid.sundroid.models.Job
 import com.sundroid.sundroid.models.RoomUserEntity
 import com.sundroid.sundroid.repositories.UserRepository
 import kotlinx.coroutines.flow.Flow
@@ -37,6 +37,7 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
 
     var appBarTitle by mutableStateOf("Sundroid")
     val users: Flow<List<RoomUserEntity>> = userRepository.users
+    val jobs: ArrayList<Job> =  Job.getSampleJobs();
 
 
     fun insertUser(user: RoomUserEntity) = viewModelScope.launch {
