@@ -33,6 +33,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.sundroid.sundroid.custom_composables.SundroidAlertDialog
+import com.sundroid.sundroid.custom_composables.SundroidFAB
 import com.sundroid.sundroid.data.AuthScreen
 import com.sundroid.sundroid.google_auth.getGoogleSignInClient
 import com.sundroid.sundroid.models.DrawerItem
@@ -140,6 +141,14 @@ class MainActivity : ComponentActivity() {
                     content =
                     {
                         Scaffold(
+
+                            floatingActionButton = {
+                                                   if(currentRoute(navController = navController)== stringResource(
+                                                           id = R.string.dashboard_route
+                                                       )){
+                                                       SundroidFAB()
+                                                   }
+                            },
 
                             topBar = {
 
