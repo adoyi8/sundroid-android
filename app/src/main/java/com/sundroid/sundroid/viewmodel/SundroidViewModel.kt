@@ -69,7 +69,7 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
 
     var appBarTitle by mutableStateOf("Sundroid")
     val users: Flow<List<RoomUserEntity>> = userRepository.users
-    val jobs: ArrayList<Job> =  Job.getSampleJobs();
+    var jobs: ArrayList<Job> =  Job.getSampleJobs();
 
 
     fun insertUser(user: RoomUserEntity) = viewModelScope.launch {
@@ -107,5 +107,10 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
         println("Blessing 2 log out called in sundroid viewmodel")
         deleteAllUsers()
 
+    }
+
+    fun addJob(){
+        var job = Job(customerEmail = formState.email.value, customerName = formState.firstName.value)
+        jobs.add(job)
     }
 }

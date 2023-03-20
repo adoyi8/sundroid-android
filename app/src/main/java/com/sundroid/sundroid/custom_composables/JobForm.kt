@@ -39,7 +39,7 @@ fun AddJobForm(
             viewModel.formState.email.value = it
         }, viewModel = viewModel, value = viewModel.formState.email.value)
 
-        SundroidButton(onClick = { /*TODO*/ }, text = "Add")
+        SundroidButton(onClick = { viewModel.addJob() }, text = "Add")
 
     }
 }

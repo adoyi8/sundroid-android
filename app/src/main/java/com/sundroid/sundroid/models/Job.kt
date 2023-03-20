@@ -13,16 +13,16 @@ import java.time.LocalDate
 
 data class Job(
     var customerName: String="",
-    val customerEmail: String?,
-    val timeReceived: LocalDate,
-    val timeDelivered: LocalDate?,
-    val description : String?,
-    val jobId: Int,
+    val customerEmail: String?="",
+    val timeReceived: LocalDate= LocalDate.now(),
+    val timeDelivered: LocalDate?=LocalDate.now(),
+    val description : String?="",
+    val jobId: Int=0,
     val paymentStatus: Boolean = false,
     val syncStatus: Boolean = false,
     val doneStatus: Boolean = false,
     val deliveredStatus: Boolean = false,
-    val amount: Long?,
+    val amount: Long?=0,
 
     ){
     companion object {
