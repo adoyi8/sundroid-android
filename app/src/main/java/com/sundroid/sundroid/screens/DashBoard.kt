@@ -4,7 +4,6 @@ package com.sundroid.sundroid.screens
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -40,10 +39,10 @@ fun DashBoard(viewModel: SundroidViewModel, navController: NavController) {
 
     if (viewModel.isLoading) {
         // Display a loading indicator while the data is being loaded
-        CircularProgressIndicator()
+
     } else if (viewModel.isError) {
         // Display an error message if there was an error loading the data
-        Text(text = "Error loading data")
+
     } else {
         JobList(viewModel.jobs)
 

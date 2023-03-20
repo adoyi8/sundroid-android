@@ -39,3 +39,8 @@ fun SundroidButton(onClick: ()->Unit, text: String){
      Text(text = text, style = MaterialTheme.typography.labelSmall)
  }
 }
+@Composable
+fun SundroidTextHeader(text: String){
+
+    Text(text = text, style = MaterialTheme.typography.headlineLarge)
+}

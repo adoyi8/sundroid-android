@@ -12,7 +12,7 @@ import java.time.LocalDate
 
 
 data class Job(
-    val customerName: String?,
+    var customerName: String="",
     val customerEmail: String?,
     val timeReceived: LocalDate,
     val timeDelivered: LocalDate?,
@@ -24,7 +24,7 @@ data class Job(
     val deliveredStatus: Boolean = false,
     val amount: Long?,
 
-){
+    ){
     companion object {
 
         fun getSampleJobs(): ArrayList<Job> {

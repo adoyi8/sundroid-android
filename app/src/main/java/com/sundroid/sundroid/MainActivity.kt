@@ -2,7 +2,6 @@ package com.sundroid.sundroid
 
 
 import CircularImage
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,8 +12,12 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -32,10 +35,13 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.sundroid.sundroid.custom_composables.AddJobForm
 import com.sundroid.sundroid.custom_composables.SundroidAlertDialog
+import com.sundroid.sundroid.custom_composables.SundroidBottomSheetContent
 import com.sundroid.sundroid.custom_composables.SundroidFAB
 import com.sundroid.sundroid.data.AuthScreen
 import com.sundroid.sundroid.google_auth.getGoogleSignInClient
+import com.sundroid.sundroid.models.BottomSheetAction
 import com.sundroid.sundroid.models.DrawerItem
 import com.sundroid.sundroid.models.Screen
 import com.sundroid.sundroid.screens.AppBottomNavigation
@@ -50,9 +56,8 @@ import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class,
-        ExperimentalLayoutApi::class
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class,
+        ExperimentalAnimationApi::class
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +85,7 @@ class MainActivity : ComponentActivity() {
                     val items = listOf(DrawerItem(R.drawable.settings, "Settings"), DrawerItem(R.drawable.logout, "Log Out"))
                     val selectedItem = remember { mutableStateOf(items[0]) }
                     val openDialog = remember { mutableStateOf(false) }
+                    val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
                     if(openDialog.value){
 
                         SundroidAlertDialog(openDialog, onYesClick = {
@@ -122,7 +128,7 @@ class MainActivity : ComponentActivity() {
                                                          openDialog.value = true
                                                       }
                                                   },
-                                                  
+
                                               )
                                           }
 
@@ -140,99 +146,120 @@ class MainActivity : ComponentActivity() {
 
                     content =
                     {
-                        Scaffold(
 
-                            floatingActionButton = {
-                                                   if(currentRoute(navController = navController)== stringResource(
-                                                           id = R.string.dashboard_route
-                                                       )){
-                                                       SundroidFAB()
+                        ModalBottomSheetLayout(
+                            sheetState = sheetState,
+                            sheetContent = { SundroidBottomSheetContent(viewModel = viewModel)},
+                           content = {
+
+                               Scaffold(
+
+                                   floatingActionButton = {
+                                       if(currentRoute(navController = navController)== stringResource(
+                                               id = R.string.dashboard_route
+                                           )){
+                                           var onClick: () -> Unit = {
+                                               viewModel.bottomSheetAction.value = BottomSheetAction.ADD_JOB
+
+                                                   scope.launch {
+                                                       sheetState.show()
                                                    }
-                            },
 
-                            topBar = {
+                                           }
+                                           SundroidFAB(R.drawable.ic_add, "Add Job", onclick = onClick)
+                                           
 
-                                if (currentRoute(navController = navController) != stringResource(id = R.string.splash_screen_route) && currentRoute(
-                                        navController = navController
-                                    ) != stringResource(id = R.string.auth_screen_route)
-                                ){
-                                    CenterAlignedTopAppBar(
-                                        modifier = Modifier.background(MaterialTheme.colorScheme.secondary),
-                                        colors = TopAppBarDefaults.smallTopAppBarColors(
-                                            containerColor = MaterialTheme.colorScheme.secondary,
-                                            titleContentColor = Color.White,
-                                            actionIconContentColor = Color.White,
-                                            navigationIconContentColor = Color.White
-                                        ),
-                                        title = {
+                                       }
+                                   },
 
-                                            Text(
-                                                viewModel.appBarTitle,
-                                                maxLines = 1,
-                                                overflow = TextOverflow.Ellipsis
-                                            )
-                                        },
-                                        navigationIcon = {
-                                            IconButton(onClick = {
-                                                scope.launch {
-                                                    drawerState.open()
-                                                }
-                                            }) {
-                                                Icon(
-                                                    imageVector = Icons.Filled.Menu,
-                                                    contentDescription = "Localized description"
-                                                )
-                                            }
-                                        },
-                                        actions = {
-                                            CircularImage(viewModel.currentUser.value.photoUrl)
-                                            Spacer(modifier = Modifier.width(10.dp))
-                                        }
-                                    )
-                            }else if(currentRoute(navController = navController)== stringResource(id = R.string.auth_screen_route)){
-                                    CenterAlignedTopAppBar(
-                                        modifier = Modifier.background(MaterialTheme.colorScheme.secondary),
-                                        colors = TopAppBarDefaults.smallTopAppBarColors(
-                                            containerColor = MaterialTheme.colorScheme.secondary,
-                                            titleContentColor = Color.White,
-                                            actionIconContentColor = Color.White,
-                                            navigationIconContentColor = Color.White
-                                        ),
-                                        title = {
+                                   topBar = {
 
-                                            Text(
-                                                viewModel.appBarTitle,
-                                                maxLines = 1,
-                                                overflow = TextOverflow.Ellipsis
-                                            )
-                                        },
+                                       if (currentRoute(navController = navController) != stringResource(id = R.string.splash_screen_route) && currentRoute(
+                                               navController = navController
+                                           ) != stringResource(id = R.string.auth_screen_route)
+                                       ){
+                                           CenterAlignedTopAppBar(
+                                               modifier = Modifier.background(MaterialTheme.colorScheme.secondary),
+                                               colors = TopAppBarDefaults.smallTopAppBarColors(
+                                                   containerColor = MaterialTheme.colorScheme.secondary,
+                                                   titleContentColor = Color.White,
+                                                   actionIconContentColor = Color.White,
+                                                   navigationIconContentColor = Color.White
+                                               ),
+                                               title = {
 
-                                    )
-                            }},
+                                                   Text(
+                                                       viewModel.appBarTitle,
+                                                       maxLines = 1,
+                                                       overflow = TextOverflow.Ellipsis
+                                                   )
+                                               },
+                                               navigationIcon = {
+                                                   IconButton(onClick = {
+                                                       scope.launch {
+                                                           drawerState.open()
+                                                       }
+                                                   }) {
+                                                       Icon(
+                                                           imageVector = Icons.Filled.Menu,
+                                                           contentDescription = "Localized description"
+                                                       )
+                                                   }
+                                               },
+                                               actions = {
+                                                   CircularImage(viewModel.currentUser.value.photoUrl)
+                                                   Spacer(modifier = Modifier.width(10.dp))
+                                               }
+                                           )
+                                       }else if(currentRoute(navController = navController)== stringResource(id = R.string.auth_screen_route)){
+                                           CenterAlignedTopAppBar(
+                                               modifier = Modifier.background(MaterialTheme.colorScheme.secondary),
+                                               colors = TopAppBarDefaults.smallTopAppBarColors(
+                                                   containerColor = MaterialTheme.colorScheme.secondary,
+                                                   titleContentColor = Color.White,
+                                                   actionIconContentColor = Color.White,
+                                                   navigationIconContentColor = Color.White
+                                               ),
+                                               title = {
 
-                            bottomBar = {
-                                if(currentRoute(navController = navController)!= stringResource(id = R.string.splash_screen_route) && currentRoute(navController = navController)!= stringResource(id = R.string.auth_screen_route))
-                                    AppBottomNavigation(navController = navController, items = bottomNavigationItems)
-                            },
-                            content = { innerPadding ->
+                                                   Text(
+                                                       viewModel.appBarTitle,
+                                                       maxLines = 1,
+                                                       overflow = TextOverflow.Ellipsis
+                                                   )
+                                               },
 
+                                               )
+                                       }},
 
-
-                                Box(modifier =
-                                Modifier
-                                    .fillMaxSize()
-                                    .padding(innerPadding)
-
-                                ){
-                                    Navigation(
-                                        navController = navController,
-                                        viewModel = viewModel
-                                    )
-                                }
+                                   bottomBar = {
+                                       if(currentRoute(navController = navController)!= stringResource(id = R.string.splash_screen_route) && currentRoute(navController = navController)!= stringResource(id = R.string.auth_screen_route))
+                                           AppBottomNavigation(navController = navController, items = bottomNavigationItems)
+                                   },
+                                   content = { innerPadding ->
 
 
-                            }
+
+                                       Box(modifier =
+                                       Modifier
+                                           .fillMaxSize()
+                                           .padding(innerPadding)
+
+                                       ){
+                                           Navigation(
+                                               navController = navController,
+                                               viewModel = viewModel
+                                           )
+                                       }
+
+
+                                   }
+                               )
+
+
+                           }
                         )
+
                     }
                   )
 
@@ -312,6 +339,11 @@ class MainActivity : ComponentActivity() {
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
                 viewModel.appBarTitle = stringResource(id = R.string.auth)
                 AuthScreen(navController = navController, viewModel=viewModel)
+            }
+            composable(getString(R.string.add_job_screen_route),  enterTransition = {  slideInHorizontally (animationSpec = tween(200)) },
+                exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
+                viewModel.appBarTitle = stringResource(id = R.string.add_job)
+                AddJobForm(viewModel=viewModel)
             }
         }
     }

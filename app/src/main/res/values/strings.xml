@@ -35,4 +35,6 @@
     <string name="jobs">Jobs</string>
     <string name="auth_screen_route">auth_screen</string>
     <string name="auth">Sign In</string>
+    <string name="add_job_screen_route">add_job_screen</string>
+    <string name="add_job">New Job</string>
 </resources>
