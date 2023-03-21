@@ -44,6 +44,7 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     var jobs =  mutableStateListOf<Job>();
 
 
+
     fun insertUser(user: RoomUserEntity) = viewModelScope.launch {
         userRepository.deleteAllUsers()
         userRepository.insertUser(user)
@@ -63,7 +64,7 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
         userRepository.deleteAllUsers()
         println("delete all users called in sundroid viewmodel")
 
-        isLoading= false
+        isLoading= true
     }
     fun getCurrentUser() = viewModelScope.launch {
         users.collect {
