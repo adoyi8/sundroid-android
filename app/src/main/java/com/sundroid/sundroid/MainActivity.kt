@@ -86,6 +86,15 @@ class MainActivity : ComponentActivity() {
                     val selectedItem = remember { mutableStateOf(items[0]) }
                     val openDialog = remember { mutableStateOf(false) }
                     val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+                    LaunchedEffect(true) {
+                        if (viewModel.bottomSheetState.value == ModalBottomSheetValue.Expanded) {
+                            sheetState.show()
+                            println("Russia "+ viewModel.bottomSheetState.value)
+                        } else {
+                            sheetState.hide()
+                            println("Russia "+ viewModel.bottomSheetState.value)
+                        }
+                    }
                     if(openDialog.value){
 
                         SundroidAlertDialog(openDialog, onYesClick = {
@@ -147,6 +156,26 @@ class MainActivity : ComponentActivity() {
                     content =
                     {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         ModalBottomSheetLayout(
                             sheetState = sheetState,
                             sheetContent = { SundroidBottomSheetContent(viewModel = viewModel)},
@@ -158,8 +187,7 @@ class MainActivity : ComponentActivity() {
                                        if(currentRoute(navController = navController)== stringResource(
                                                id = R.string.dashboard_route
                                            )){
-                                           var onClick: () -> Unit = {
-                                               viewModel.bottomSheetAction.value = BottomSheetAction.ADD_JOB
+                                           var onClick: () -> Unit = { viewModel.bottomSheetAction.value = BottomSheetAction.ADD_JOB
 
                                                    scope.launch {
                                                        sheetState.show()

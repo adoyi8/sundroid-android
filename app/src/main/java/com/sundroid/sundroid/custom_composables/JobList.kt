@@ -8,6 +8,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,9 +24,27 @@ import com.sundroid.sundroid.R
 import com.sundroid.sundroid.models.Job
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @Preview
 @Composable
-fun JobList(@PreviewParameter(MyListProvider::class) jobs: ArrayList<Job>) {
+fun JobList(@PreviewParameter(MyListProvider::class) jobs: SnapshotStateList<Job>) {
     LazyColumn {
         items(jobs) { job ->
             MyCard(job)
@@ -103,7 +123,7 @@ fun StatusView(icon : Int, state: Boolean){
 @Preview
 @Composable
 fun MyComposablePreview() {
-    JobList(jobs = ArrayList())
+    JobList(jobs = mutableStateListOf())
 }
 class MyListProvider : PreviewParameterProvider<ArrayList<Job>> {
     override val values: Sequence<ArrayList<Job>> = sequenceOf(
