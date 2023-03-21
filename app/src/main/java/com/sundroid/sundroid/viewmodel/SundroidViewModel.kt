@@ -2,6 +2,7 @@ package com.sundroid.sundroid.viewmodel
 
 import android.app.Application
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -30,8 +31,8 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
 
     var bottomSheetAction = mutableStateOf(BottomSheetAction.ADD_JOB)
     @OptIn(ExperimentalMaterialApi::class)
-    val bottomSheetState = mutableStateOf(ModalBottomSheetValue.Hidden)
 
+    val bottomSheetState = mutableStateOf<ModalBottomSheetState>(ModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden))
 
 
     var currentUser =  mutableStateOf<RoomUserEntity>(RoomUserEntity(1,"","","","","","",""));
@@ -81,19 +82,20 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun addJob(){
-        var job = Job(customerEmail = formState.email.value, customerName = formState.firstName.value)
+        var job = Job(customerEmail = formState.email.value, customerName = formState.firstName.value, amount = formState.amount.value.toDouble(), description = formState.jobDescription.value)
         jobs.add(job)
         hideBottomSheet()
+        formState.clearForm()
     }
 
     @OptIn(ExperimentalMaterialApi::class)
     fun showBottomSheet() {
-        bottomSheetState.value = ModalBottomSheetValue.Expanded
+        bottomSheetState.value = ModalBottomSheetState(initialValue =ModalBottomSheetValue.Expanded )
     }
 
     // Call this method to hide the bottom sheet
     @OptIn(ExperimentalMaterialApi::class)
     fun hideBottomSheet() {
-        bottomSheetState.value = ModalBottomSheetValue.Hidden
+        bottomSheetState.value = ModalBottomSheetState(initialValue =ModalBottomSheetValue.Hidden)
     }
 }

@@ -28,8 +28,18 @@ fun AddJobForm(
 
 ) {
 
+
+
+
+
+
+
+
+
+
+
+
     Column( modifier = Modifier.padding(10.dp)) {
-        
         Spacer(modifier = Modifier.height(30.dp))
          SundroidTextHeader(text = "Add Job")
         SundroidTextField("Customer Name", onChange = {
@@ -38,9 +48,15 @@ fun AddJobForm(
         SundroidTextField("Customer Email", onChange = {
             viewModel.formState.email.value = it
         }, viewModel = viewModel, value = viewModel.formState.email.value)
+        SundroidTextArea("Job Description", onChange = {
+            viewModel.formState.jobDescription.value = it
+        }, viewModel = viewModel, value = viewModel.formState.jobDescription.value)
 
+        SundroidTextFieldAmount("Amount", onChange = {
+
+            viewModel.formState.amount.value = it.toInt()
+        }, viewModel = viewModel, value = viewModel.formState.amount.value)
         SundroidButton(onClick = { viewModel.addJob() }, text = "Add")
-
     }
 }
 

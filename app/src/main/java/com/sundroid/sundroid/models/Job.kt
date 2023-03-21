@@ -22,7 +22,7 @@ data class Job(
     val syncStatus: Boolean = false,
     val doneStatus: Boolean = false,
     val deliveredStatus: Boolean = false,
-    val amount: Long?=0,
+    val amount: Double?=0.0,
 
     ){
     companion object {
@@ -40,7 +40,7 @@ data class Job(
                 syncStatus = false,
                 doneStatus = false,
                 deliveredStatus = false,
-                amount = 2000
+                amount = 2000.0
             )
             jobs.add(job)
              job = Job(
@@ -54,7 +54,7 @@ data class Job(
                 syncStatus = true,
                 doneStatus = false,
                 deliveredStatus = false,
-                amount = 2000
+                amount = 2000.0
             )
             return jobs
         }

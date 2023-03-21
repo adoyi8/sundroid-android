@@ -12,13 +12,17 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.*
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -85,16 +89,8 @@ class MainActivity : ComponentActivity() {
                     val items = listOf(DrawerItem(R.drawable.settings, "Settings"), DrawerItem(R.drawable.logout, "Log Out"))
                     val selectedItem = remember { mutableStateOf(items[0]) }
                     val openDialog = remember { mutableStateOf(false) }
-                    val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-                    LaunchedEffect(true) {
-                        if (viewModel.bottomSheetState.value == ModalBottomSheetValue.Expanded) {
-                            sheetState.show()
-                            println("Russia "+ viewModel.bottomSheetState.value)
-                        } else {
-                            sheetState.hide()
-                            println("Russia "+ viewModel.bottomSheetState.value)
-                        }
-                    }
+
+
                     if(openDialog.value){
 
                         SundroidAlertDialog(openDialog, onYesClick = {
@@ -176,8 +172,10 @@ class MainActivity : ComponentActivity() {
 
 
 
+
+
                         ModalBottomSheetLayout(
-                            sheetState = sheetState,
+                            sheetState = viewModel.bottomSheetState.value,
                             sheetContent = { SundroidBottomSheetContent(viewModel = viewModel)},
                            content = {
 
@@ -190,7 +188,7 @@ class MainActivity : ComponentActivity() {
                                            var onClick: () -> Unit = { viewModel.bottomSheetAction.value = BottomSheetAction.ADD_JOB
 
                                                    scope.launch {
-                                                       sheetState.show()
+                                                       viewModel.showBottomSheet()
                                                    }
 
                                            }
