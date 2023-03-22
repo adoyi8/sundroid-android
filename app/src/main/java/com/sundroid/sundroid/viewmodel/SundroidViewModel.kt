@@ -64,7 +64,7 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
         userRepository.deleteAllUsers()
         println("delete all users called in sundroid viewmodel")
 
-        isLoading= true
+        isLoading= false
     }
     fun getCurrentUser() = viewModelScope.launch {
         users.collect {
@@ -75,7 +75,6 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
         }
 
     }
-
     fun logOut()  = viewModelScope.launch{
         println("Blessing 2 log out called in sundroid viewmodel")
         deleteAllUsers()
