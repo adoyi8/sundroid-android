@@ -1,6 +1,7 @@
 package com.sundroid.sundroid.custom_composables
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,20 +9,19 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.sundroid.sundroid.R
+import com.sundroid.sundroid.models.BottomSheetAction
 import com.sundroid.sundroid.models.Job
+import com.sundroid.sundroid.viewmodel.SundroidViewModel
 
 
 
@@ -38,16 +38,11 @@ import com.sundroid.sundroid.models.Job
 
 
 
-
-
-
-
-@Preview
 @Composable
-fun JobList(@PreviewParameter(MyListProvider::class) jobs: SnapshotStateList<Job>) {
+fun JobList(@PreviewParameter(MyListProvider::class) jobs: List<Job>, viewModel: SundroidViewModel) {
     LazyColumn {
         items(jobs) { job ->
-            MyCard(job)
+            MyCard(job,viewModel)
         }
     }
 }
@@ -59,11 +54,22 @@ fun JobList(@PreviewParameter(MyListProvider::class) jobs: SnapshotStateList<Job
 
 
 @Composable
-fun MyCard(job: Job) {
+fun MyCard(job: Job, viewModel: SundroidViewModel) {
+    var onClick: () -> Unit = {
+
+
+        viewModel.bottomSheetAction.value = BottomSheetAction.UPDATE_JOB
+           viewModel.formState.convertToFormState(job)
+
+
+            viewModel.showBottomSheet()
+
+
+    }
     Card(
         modifier = Modifier
             .padding(16.dp)
-            .fillMaxWidth()
+            .fillMaxWidth().clickable(onClick =  onClick)
     ) {
         Row( modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween) {
@@ -120,11 +126,7 @@ fun StatusView(icon : Int, state: Boolean){
         .padding(5.dp)
         .width(45.dp))
 }
-@Preview
-@Composable
-fun MyComposablePreview() {
-    JobList(jobs = mutableStateListOf())
-}
+
 class MyListProvider : PreviewParameterProvider<ArrayList<Job>> {
     override val values: Sequence<ArrayList<Job>> = sequenceOf(
         Job.getSampleJobs()

@@ -1,11 +1,9 @@
 package com.sundroid.sundroid.viewmodel
-
 import android.app.Application
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
@@ -19,32 +17,22 @@ import com.sundroid.sundroid.repositories.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-
 class SundroidViewModel(application: Application) : AndroidViewModel(application) {
-
 
 
     private val userDao = SundroidLocalDatabase.getDatabase(application).userDao()
     private val userRepository = UserRepository(userDao)
     var isLoading by mutableStateOf(false)
     val isError by mutableStateOf(false)
-
     var bottomSheetAction = mutableStateOf(BottomSheetAction.ADD_JOB)
     @OptIn(ExperimentalMaterialApi::class)
-
     val bottomSheetState = mutableStateOf<ModalBottomSheetState>(ModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden))
-
-
     var currentUser =  mutableStateOf<RoomUserEntity>(RoomUserEntity(1,"","","","","","",""));
+
     val formState: AddJobFormState = AddJobFormState();
-
-
     var appBarTitle by mutableStateOf("Sundroid")
     val users: Flow<List<RoomUserEntity>> = userRepository.users
-    var jobs =  mutableStateListOf<Job>();
-
-
-
+    val jobs: Flow<List<Job>> = userRepository.jobs
     fun insertUser(user: RoomUserEntity) = viewModelScope.launch {
         userRepository.deleteAllUsers()
         userRepository.insertUser(user)
@@ -81,9 +69,10 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
 
     }
 
-    fun addJob(){
-        var job = Job(customerEmail = formState.email.value, customerName = formState.firstName.value, amount = formState.amount.value.toDouble(), description = formState.jobDescription.value)
-        jobs.add(job)
+
+
+    fun addJob() = viewModelScope.launch {
+        userRepository.insertJob(formState.getJobFromFormState())
         hideBottomSheet()
         formState.clearForm()
     }
@@ -97,5 +86,11 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     @OptIn(ExperimentalMaterialApi::class)
     fun hideBottomSheet() {
         bottomSheetState.value = ModalBottomSheetState(initialValue =ModalBottomSheetValue.Hidden)
+    }
+
+    fun updateJob() = viewModelScope.launch {
+        userRepository.updateJob(formState.getJobFromFormState())
+        hideBottomSheet()
+        formState.clearForm()
     }
 }

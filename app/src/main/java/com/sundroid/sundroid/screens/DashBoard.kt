@@ -22,6 +22,14 @@ import kotlinx.coroutines.runBlocking
 fun DashBoard(viewModel: SundroidViewModel, navController: NavController) {
 
 
+
+
+
+
+    val jobs by viewModel.jobs.collectAsState(
+        initial = emptyList()
+    )
+
     LaunchedEffect(true) {
 
         viewModel.getCurrentUser();
@@ -44,7 +52,16 @@ fun DashBoard(viewModel: SundroidViewModel, navController: NavController) {
         // Display an error message if there was an error loading the data
 
     } else {
-        JobList(viewModel.jobs)
+
+                JobList(jobs, viewModel)
+
+
+
+        }
+
+
+
+
 
     }
 
@@ -76,7 +93,7 @@ fun DashBoard(viewModel: SundroidViewModel, navController: NavController) {
 
 
 
-}
+
 @Composable
 fun UserList(viewModel: SundroidViewModel) {
     var usersList = viewModel.users.collectAsState(listOf()).value;

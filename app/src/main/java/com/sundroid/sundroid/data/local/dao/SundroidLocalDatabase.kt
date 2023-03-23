@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.sundroid.sundroid.models.Job
 import com.sundroid.sundroid.models.RoomUserEntity
 
 
@@ -18,7 +19,7 @@ import com.sundroid.sundroid.models.RoomUserEntity
 
 
 
-@Database(entities = [RoomUserEntity::class], version = 2, exportSchema = false)
+@Database(entities = [RoomUserEntity::class, Job::class], version = 4, exportSchema = false)
 abstract class SundroidLocalDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 

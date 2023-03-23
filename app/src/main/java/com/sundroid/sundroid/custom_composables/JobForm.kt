@@ -1,6 +1,7 @@
 package com.sundroid.sundroid.custom_composables
 
 
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material3.*
@@ -43,20 +44,59 @@ fun AddJobForm(
         Spacer(modifier = Modifier.height(30.dp))
          SundroidTextHeader(text = "Add Job")
         SundroidTextField("Customer Name", onChange = {
-            viewModel.formState.firstName.value = it
-        }, viewModel = viewModel, value = viewModel.formState.firstName.value)
+            viewModel.formState.customerName .value = it
+        }, viewModel = viewModel, value = viewModel.formState.customerName.value)
         SundroidTextField("Customer Email", onChange = {
-            viewModel.formState.email.value = it
-        }, viewModel = viewModel, value = viewModel.formState.email.value)
+            viewModel.formState.customerEmail.value = it
+        }, viewModel = viewModel, value = viewModel.formState.customerEmail.value)
         SundroidTextArea("Job Description", onChange = {
-            viewModel.formState.jobDescription.value = it
-        }, viewModel = viewModel, value = viewModel.formState.jobDescription.value)
+            viewModel.formState.description.value = it
+        }, viewModel = viewModel, value = viewModel.formState.description.value)
 
         SundroidTextFieldAmount("Amount", onChange = {
 
             viewModel.formState.amount.value = it.toInt()
         }, viewModel = viewModel, value = viewModel.formState.amount.value)
         SundroidButton(onClick = { viewModel.addJob() }, text = "Add")
+    }
+}
+
+@Composable
+fun UpdateJobForm(
+    viewModel: SundroidViewModel
+
+) {
+
+
+
+
+
+
+
+
+
+
+
+
+    Column( modifier = Modifier.padding(10.dp)) {
+        Spacer(modifier = Modifier.height(30.dp))
+        SundroidTextHeader(text = "Update Job")
+        SundroidTextField("Customer Name", onChange = {
+            println("arya $it")
+            viewModel.formState.customerName.value = it
+        }, viewModel = viewModel, value = viewModel.formState.customerName.value)
+        SundroidTextField("Customer Email", onChange = {
+            viewModel.formState.customerEmail.value = it
+        }, viewModel = viewModel, value = viewModel.formState.customerEmail.value)
+        SundroidTextArea("Job Description", onChange = {
+            viewModel.formState.description.value = it
+        }, viewModel = viewModel, value = viewModel.formState.description.value)
+
+        SundroidTextFieldAmount("Amount", onChange = {
+
+            viewModel.formState.amount.value = it.toInt()
+        }, viewModel = viewModel, value = viewModel.formState.amount.value)
+        SundroidButton(onClick = { viewModel.updateJob() }, text = "Update")
     }
 }
 
