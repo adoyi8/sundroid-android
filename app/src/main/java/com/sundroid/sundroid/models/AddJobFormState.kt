@@ -34,7 +34,7 @@ class AddJobFormState(){
           description.value = ""
           paymentStatus.value = false
           syncStatus.value = false
-          doneStatus.value = true
+          doneStatus.value = false
           deliveredStatus.value = false
           jobId.value =-1
           amount.value=0
