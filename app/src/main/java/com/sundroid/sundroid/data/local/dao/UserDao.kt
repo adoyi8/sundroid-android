@@ -17,13 +17,10 @@ interface UserDao {
     suspend fun deleteUser(user: RoomUserEntity)
     @Query("DELETE FROM users")
     suspend fun deleteAllUsers()
-
     @Query("SELECT * FROM jobs")
     fun getAllJobs(): Flow<List<Job>>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertJob(job: Job)
-
     @Delete
     suspend fun deleteJob(job: Job)
     @Query("DELETE FROM jobs")

@@ -23,14 +23,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
 
+
+
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SundroidTextField(placeholder: String="", onChange:(String)->Unit={}, viewModel: SundroidViewModel, value: String){
     val modifier: Modifier = Modifier
-
-
-
     val leadingIcon: @Composable (() -> Unit)? = null
     val imeAction: ImeAction = ImeAction.Next
     val keyboardType: KeyboardType = KeyboardType.Text
@@ -43,7 +42,6 @@ fun SundroidTextField(placeholder: String="", onChange:(String)->Unit={}, viewMo
             focusManager.moveFocus(FocusDirection.Down)
         }
     )
-
     OutlinedTextField(
         modifier = modifier.fillMaxWidth().padding(top = 10.dp),
         value = value,
@@ -64,10 +62,6 @@ fun SundroidTextField(placeholder: String="", onChange:(String)->Unit={}, viewMo
         }
     )
 }
-
-
-
-
 
 
 @SuppressLint("UnrememberedMutableState")
