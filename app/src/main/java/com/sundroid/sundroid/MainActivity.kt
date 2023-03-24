@@ -10,7 +10,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -205,7 +204,7 @@ class MainActivity : ComponentActivity() {
                                            ) != stringResource(id = R.string.auth_screen_route)
                                        ){
                                            CenterAlignedTopAppBar(
-                                               modifier = Modifier.background(MaterialTheme.colorScheme.secondary),
+
                                                colors = TopAppBarDefaults.smallTopAppBarColors(
                                                    containerColor = MaterialTheme.colorScheme.secondary,
                                                    titleContentColor = Color.White,
@@ -239,7 +238,7 @@ class MainActivity : ComponentActivity() {
                                            )
                                        }else if(currentRoute(navController = navController)== stringResource(id = R.string.auth_screen_route)){
                                            CenterAlignedTopAppBar(
-                                               modifier = Modifier.background(MaterialTheme.colorScheme.secondary),
+
                                                colors = TopAppBarDefaults.smallTopAppBarColors(
                                                    containerColor = MaterialTheme.colorScheme.secondary,
                                                    titleContentColor = Color.White,
