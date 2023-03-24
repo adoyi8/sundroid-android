@@ -3,7 +3,6 @@ package com.sundroid.sundroid.screens
 
 
 import androidx.compose.foundation.Image
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
@@ -23,7 +22,7 @@ fun AppBottomNavigation(navController: NavHostController,
 
      {
 
-         NavigationBar(containerColor = MaterialTheme.colorScheme.secondary, contentColor = Color.White) {
+         NavigationBar() {
              val currentRoute = currentRoute(navController)
 
 
