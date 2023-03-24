@@ -8,7 +8,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
@@ -30,7 +29,7 @@ fun AppBottomNavigation(navController: NavHostController,
              items.forEach { screen ->
                  NavigationBarItem(
                      icon = { Image(painter = painterResource(id = screen.icon), contentDescription = stringResource(id = screen.resourceId)) },
-                     label = { Text(stringResource(id = screen.resourceId), color = Color.White) },
+                     label = { Text(stringResource(id = screen.resourceId)) },
                      selected = currentRoute == screen.route,
                      // This hides the title for the unselected items
                      onClick = {

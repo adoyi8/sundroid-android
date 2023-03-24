@@ -24,7 +24,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -204,13 +203,6 @@ class MainActivity : ComponentActivity() {
                                            ) != stringResource(id = R.string.auth_screen_route)
                                        ){
                                            CenterAlignedTopAppBar(
-
-                                               colors = TopAppBarDefaults.smallTopAppBarColors(
-                                                   containerColor = MaterialTheme.colorScheme.secondary,
-                                                   titleContentColor = Color.White,
-                                                   actionIconContentColor = Color.White,
-                                                   navigationIconContentColor = Color.White
-                                               ),
                                                title = {
 
                                                    Text(
@@ -238,13 +230,6 @@ class MainActivity : ComponentActivity() {
                                            )
                                        }else if(currentRoute(navController = navController)== stringResource(id = R.string.auth_screen_route)){
                                            CenterAlignedTopAppBar(
-
-                                               colors = TopAppBarDefaults.smallTopAppBarColors(
-                                                   containerColor = MaterialTheme.colorScheme.secondary,
-                                                   titleContentColor = Color.White,
-                                                   actionIconContentColor = Color.White,
-                                                   navigationIconContentColor = Color.White
-                                               ),
                                                title = {
 
                                                    Text(

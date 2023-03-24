@@ -23,10 +23,7 @@ fun SignInButton(
     onClick: () -> Unit
 ) {
     Surface(
-        modifier = Modifier.clickable(
-            enabled = !isLoading,
-            onClick = onClick
-        ),
+
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -34,6 +31,10 @@ fun SignInButton(
 
         ) {
             Icon(
+                modifier = Modifier.clickable(
+                    enabled = !isLoading,
+                    onClick = onClick
+                ),
                 painter = icon,
                 contentDescription = "SignInButton",
                 tint = Color.Unspecified
