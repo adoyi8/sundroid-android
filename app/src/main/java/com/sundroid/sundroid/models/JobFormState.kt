@@ -1,8 +1,9 @@
 package com.sundroid.sundroid.models
 
 import androidx.compose.runtime.mutableStateOf
+import com.sundroid.sundroid.data.local.dao.database_models.Job
 
-class AddJobFormState(){
+class JobFormState(){
 
 
 
@@ -43,21 +44,21 @@ class AddJobFormState(){
      fun convertToFormState(job: Job){
           clearForm()
           job.apply {
-              this@AddJobFormState.customerName.value = customerName
-              this@AddJobFormState.customerEmail.value = customerEmail
-              this@AddJobFormState.amount.value = amount
-              this@AddJobFormState.description.value = description
-              this@AddJobFormState.deliveredStatus.value = deliveredStatus
-              this@AddJobFormState.doneStatus.value = doneStatus
-              this@AddJobFormState.paymentStatus.value = paymentStatus
-              this@AddJobFormState.syncStatus.value = syncStatus
-              this@AddJobFormState.timeDelivered.value = timeDelivered
-              this@AddJobFormState.timeReceived.value = timeReceived
-               this@AddJobFormState.jobId.value = jobId
+              this@JobFormState.customerName.value = customerName
+              this@JobFormState.customerEmail.value = customerEmail
+              this@JobFormState.amount.value = amount
+              this@JobFormState.description.value = description
+              this@JobFormState.deliveredStatus.value = deliveredStatus
+              this@JobFormState.doneStatus.value = doneStatus
+              this@JobFormState.paymentStatus.value = paymentStatus
+              this@JobFormState.syncStatus.value = syncStatus
+              this@JobFormState.timeDelivered.value = timeDelivered
+              this@JobFormState.timeReceived.value = timeReceived
+               this@JobFormState.jobId.value = jobId
           }
      }
 
-     fun getJobFromFormState():Job{
+     fun getJobFromFormState(): Job {
           var job = Job(
                customerName = customerName.value,
                customerEmail = customerEmail.value,

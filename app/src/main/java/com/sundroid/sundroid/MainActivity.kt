@@ -46,10 +46,7 @@ import com.sundroid.sundroid.google_auth.getGoogleSignInClient
 import com.sundroid.sundroid.models.BottomSheetAction
 import com.sundroid.sundroid.models.DrawerItem
 import com.sundroid.sundroid.models.Screen
-import com.sundroid.sundroid.screens.AppBottomNavigation
-import com.sundroid.sundroid.screens.DashBoard
-import com.sundroid.sundroid.screens.JobScreen
-import com.sundroid.sundroid.screens.StaffScreen
+import com.sundroid.sundroid.screens.*
 import com.sundroid.sundroid.ui.theme.SundroidTheme
 import com.sundroid.sundroid.ui.theme.screens.SplashScreen
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
@@ -58,7 +55,8 @@ import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class,
+    @OptIn(
+        ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class,
         ExperimentalAnimationApi::class
     )
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,19 +75,23 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
 
-                ) {
+                    ) {
                     val navController = rememberAnimatedNavController()
                     val bottomNavigationItems = listOf(
                         Screen.Home,
                         Screen.Jobs,
                         Screen.Staff
                     )
-                    val items = listOf(DrawerItem(R.drawable.settings, "Settings"), DrawerItem(R.drawable.logout, "Log Out"))
+                    val items = listOf(
+                        DrawerItem(R.drawable.ic_shop, "My Shops"),
+                        DrawerItem(R.drawable.settings, "Settings"),
+                        DrawerItem(R.drawable.logout, "Log Out"),
+                    )
                     val selectedItem = remember { mutableStateOf(items[0]) }
                     val openDialog = remember { mutableStateOf(false) }
 
 
-                    if(openDialog.value){
+                    if (openDialog.value) {
 
                         SundroidAlertDialog(openDialog, onYesClick = {
                             openDialog.value = false
@@ -104,193 +106,204 @@ class MainActivity : ComponentActivity() {
                         }, icon = R.drawable.logout)
 
                     }
-                  ModalNavigationDrawer(
-                      modifier = Modifier.width(50.dp),
-                      drawerContent = {
-                          ModalDrawerSheet {
-
-                              Box(
-                                  Modifier
-                                      .width(300.dp) // Set the width of the content here
-                              ) {
-
-
-                                      Column(modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)) {
-                                          Spacer(modifier = Modifier.height(25.dp))
-                                          Text(text= "Sundroid", style = MaterialTheme.typography.headlineLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(horizontal = 15.dp))
-                                          Spacer(modifier = Modifier.height(25.dp))
-                                          items.forEach { item ->
-                                              NavigationDrawerItem(
-                                                  icon = {  Image(painter = painterResource(id = item.icon), contentDescription = null)  },
-                                                  label = { Text(item.title) },
-                                                  selected = item == selectedItem.value,
-                                                  onClick = {
-                                                      scope.launch { drawerState.close() }
-                                                      selectedItem.value = item
-                                                      if(item.title=="Log Out"){
-                                                         openDialog.value = true
-                                                      }
-                                                  },
-
-                                              )
-                                          }
-
-
-
-
-                              }
-
-
-
-                          }
-                      }},
-                      drawerState = drawerState,
-
-
-                    content =
-                    {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        ModalBottomSheetLayout(
-                            sheetState = viewModel.bottomSheetState.value,
-                            sheetContent = { SundroidBottomSheetContent(viewModel = viewModel)},
-                           content = {
-
-                               Scaffold(
-
-                                   floatingActionButton = {
-                                       if(currentRoute(navController = navController)== stringResource(
-                                               id = R.string.dashboard_route
-                                           )){
-                                           var onClick: () -> Unit = { viewModel.bottomSheetAction.value = BottomSheetAction.ADD_JOB
-
-                                                   scope.launch {
-                                                       viewModel.showBottomSheet()
-                                                   }
-
-                                           }
-                                           SundroidFAB(R.drawable.ic_add, "Add Job", onclick = onClick)
-                                           
-
-                                       }
-                                   },
-
-                                   topBar = {
-
-                                       if (currentRoute(navController = navController) != stringResource(id = R.string.splash_screen_route) && currentRoute(
-                                               navController = navController
-                                           ) != stringResource(id = R.string.auth_screen_route)
-                                       ){
-                                           CenterAlignedTopAppBar(
-                                               title = {
-
-                                                   Text(
-                                                       viewModel.appBarTitle,
-                                                       maxLines = 1,
-                                                       overflow = TextOverflow.Ellipsis
-                                                   )
-                                               },
-                                               navigationIcon = {
-                                                   IconButton(onClick = {
-                                                       scope.launch {
-                                                           drawerState.open()
-                                                       }
-                                                   }) {
-                                                       Icon(
-                                                           imageVector = Icons.Filled.Menu,
-                                                           contentDescription = "Localized description"
-                                                       )
-                                                   }
-                                               },
-                                               actions = {
-                                                   CircularImage(viewModel.currentUser.value.photoUrl)
-                                                   Spacer(modifier = Modifier.width(10.dp))
-                                               }
-                                           )
-                                       }else if(currentRoute(navController = navController)== stringResource(id = R.string.auth_screen_route)){
-                                           CenterAlignedTopAppBar(
-                                               title = {
-
-                                                   Text(
-                                                       viewModel.appBarTitle,
-                                                       maxLines = 1,
-                                                       overflow = TextOverflow.Ellipsis
-                                                   )
-                                               },
-
-                                               )
-                                       }},
-
-                                   bottomBar = {
-                                       if(currentRoute(navController = navController)!= stringResource(id = R.string.splash_screen_route) && currentRoute(navController = navController)!= stringResource(id = R.string.auth_screen_route))
-                                           AppBottomNavigation(navController = navController, items = bottomNavigationItems)
-                                   },
-                                   content = { innerPadding ->
-
-
-
-                                       Box(modifier =
-                                       Modifier
-                                           .fillMaxSize()
-                                           .padding(innerPadding)
-
-                                       ){
-                                           Navigation(
-                                               navController = navController,
-                                               viewModel = viewModel
-                                           )
-                                       }
-
-
-                                   }
-                               )
-
-
-                           }
-                        )
-
-                    }
-                  )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    ModalNavigationDrawer(
+                        modifier = Modifier.width(50.dp),
+                        drawerContent = {
+                            ModalDrawerSheet {
+
+                                Box(
+                                    Modifier
+                                        .width(300.dp) // Set the width of the content here
+                                ) {
+
+
+                                    Column(modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)) {
+                                        Spacer(modifier = Modifier.height(25.dp))
+                                        Text(
+                                            text = "Sundroid",
+                                            style = MaterialTheme.typography.headlineLarge,
+                                            color = MaterialTheme.colorScheme.primary,
+                                            modifier = Modifier.padding(horizontal = 15.dp)
+                                        )
+                                        Spacer(modifier = Modifier.height(25.dp))
+                                        items.forEach { item ->
+                                            NavigationDrawerItem(
+                                                icon = {
+                                                    Image(
+                                                        painter = painterResource(id = item.icon),
+                                                        contentDescription = null
+                                                    )
+                                                },
+                                                label = { Text(item.title) },
+                                                selected = item == selectedItem.value,
+                                                onClick = {
+                                                    scope.launch { drawerState.close() }
+                                                    selectedItem.value = item
+                                                    if (item.title == "Log Out") {
+                                                        openDialog.value = true
+                                                    } else if (item.title == "My Shops") {
+                                                        openDialog.value = false
+                                                        navController.navigate(getString(R.string.shop_screen)) {
+                                                            popUpTo("splash_screen") {
+                                                                inclusive = true
+                                                            }
+
+                                                        }
+                                                    }
+                                                },
+
+                                                )
+                                        }
+
+
+                                    }
+
+
+                                }
+                            }
+                        },
+                        drawerState = drawerState,
+
+
+                        content =
+                        {
+
+
+                            ModalBottomSheetLayout(
+                                sheetState = viewModel.bottomSheetState.value,
+                                sheetContent = { SundroidBottomSheetContent(viewModel = viewModel) },
+                                content = {
+
+                                    Scaffold(
+
+
+                                        floatingActionButton = {
+                                            if (currentRoute(navController = navController) == stringResource(
+                                                    id = R.string.dashboard_route
+                                                )
+                                            ) {
+                                                var onClick: () -> Unit = {
+                                                    viewModel.bottomSheetAction.value =
+                                                        BottomSheetAction.ADD_JOB
+
+                                                    scope.launch {
+                                                        viewModel.showBottomSheet()
+                                                    }
+                                                }
+                                                SundroidFAB(
+                                                    R.drawable.ic_add,
+                                                    "Add Job",
+                                                    onclick = onClick
+                                                )
+                                            }
+                                            else if(currentRoute(navController = navController) == stringResource(
+                                                    id = R.string.shop_screen
+                                                )){
+                                                var onClick: () -> Unit = {
+                                                    viewModel.bottomSheetAction.value =
+                                                        BottomSheetAction.ADD_SHOP
+
+                                                    scope.launch {
+                                                        viewModel.showBottomSheet()
+                                                    }
+                                                }
+                                                SundroidFAB(
+                                                    R.drawable.ic_add,
+                                                    "Register Shop",
+                                                    onclick = onClick
+                                                )
+                                            }
+                                        },
+
+                                        topBar = {
+                                            if (currentRoute(navController = navController) != stringResource(
+                                                    id = R.string.splash_screen_route
+                                                ) && currentRoute(
+                                                    navController = navController
+                                                ) != stringResource(id = R.string.auth_screen_route)
+                                            ) {
+                                                CenterAlignedTopAppBar(
+                                                    title = {
+
+                                                        Text(
+                                                            viewModel.appBarTitle,
+                                                            maxLines = 1,
+                                                            overflow = TextOverflow.Ellipsis
+                                                        )
+                                                    },
+                                                    navigationIcon = {
+                                                        IconButton(onClick = {
+                                                            scope.launch {
+                                                                drawerState.open()
+                                                            }
+                                                        }) {
+                                                            Icon(
+                                                                imageVector = Icons.Filled.Menu,
+                                                                contentDescription = "Localized description"
+                                                            )
+                                                        }
+                                                    },
+                                                    actions = {
+                                                        CircularImage(viewModel.currentUser.value.photoUrl)
+                                                        Spacer(modifier = Modifier.width(10.dp))
+                                                    }
+                                                )
+                                            } else if (currentRoute(navController = navController) == stringResource(
+                                                    id = R.string.auth_screen_route
+                                                )
+                                            ) {
+                                                CenterAlignedTopAppBar(
+                                                    title = {
+
+                                                        Text(
+                                                            viewModel.appBarTitle,
+                                                            maxLines = 1,
+                                                            overflow = TextOverflow.Ellipsis
+                                                        )
+                                                    },
+
+                                                    )
+                                            }
+                                        },
+
+                                        bottomBar = {
+                                            if (currentRoute(navController = navController) != stringResource(
+                                                    id = R.string.splash_screen_route
+                                                ) && currentRoute(navController = navController) != stringResource(
+                                                    id = R.string.auth_screen_route
+                                                )
+                                            )
+                                                AppBottomNavigation(
+                                                    navController = navController,
+                                                    items = bottomNavigationItems
+                                                )
+                                        },
+                                        content = { innerPadding ->
+
+
+                                            Box(
+                                                modifier =
+                                                Modifier
+                                                    .fillMaxSize()
+                                                    .padding(innerPadding)
+
+                                            ) {
+                                                Navigation(
+                                                    navController = navController,
+                                                    viewModel = viewModel
+                                                )
+                                            }
+
+
+                                        }
+                                    )
+
+
+                                }
+                            )
+
+                        }
+                    )
 
 
                 }
@@ -309,58 +322,67 @@ class MainActivity : ComponentActivity() {
     }
 
 
-
-
-
     @OptIn(ExperimentalAnimationApi::class)
     @Composable
     fun Navigation(navController: NavHostController, viewModel: SundroidViewModel) {
 
 
-     
-
-
-        AnimatedNavHost(navController = navController,
-            startDestination = getString(R.string.splash_screen_route)) {
-            composable(getString(R.string.splash_screen_route),   enterTransition = {  slideInHorizontally (animationSpec = tween(200)) },
+        AnimatedNavHost(
+            navController = navController,
+            startDestination = getString(R.string.splash_screen_route)
+        ) {
+            composable(getString(R.string.splash_screen_route),
+                enterTransition = { slideInHorizontally(animationSpec = tween(200)) },
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) })
 
-             {
+            {
                 SplashScreen(navController = navController, viewModel = viewModel)
 
             }
             // Main Screen
-            composable(getString(R.string.job_screen_route),  enterTransition = {  slideInHorizontally (animationSpec = tween(200)) },
+            composable(getString(R.string.job_screen_route),
+                enterTransition = { slideInHorizontally(animationSpec = tween(200)) },
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
                 viewModel.appBarTitle = stringResource(id = R.string.jobs)
                 JobScreen()
             }
-            composable(getString(R.string.staff_screen_route),  enterTransition = {  slideInHorizontally (animationSpec = tween(200)) },
+            composable(getString(R.string.staff_screen_route),
+                enterTransition = { slideInHorizontally(animationSpec = tween(200)) },
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
-                viewModel.appBarTitle  = stringResource(id = R.string.staff)
+                viewModel.appBarTitle = stringResource(id = R.string.staff)
                 StaffScreen()
             }
-            composable(getString(R.string.dashboard_route),  enterTransition = {  slideInHorizontally (animationSpec = tween(200)) },
+            composable(getString(R.string.dashboard_route),
+                enterTransition = { slideInHorizontally(animationSpec = tween(200)) },
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
                 viewModel.appBarTitle = stringResource(id = R.string.home)
-                DashBoard(viewModel=viewModel, navController = navController)
+                DashBoard(viewModel = viewModel, navController = navController)
             }
-            composable(getString(R.string.auth_screen_route),  enterTransition = {  slideInHorizontally (animationSpec = tween(200)) },
+            composable(getString(R.string.auth_screen_route),
+                enterTransition = { slideInHorizontally(animationSpec = tween(200)) },
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
                 viewModel.appBarTitle = stringResource(id = R.string.auth)
-                AuthScreen(navController = navController, viewModel=viewModel)
+                AuthScreen(navController = navController, viewModel = viewModel)
             }
-            composable(getString(R.string.add_job_screen_route),  enterTransition = {  slideInHorizontally (animationSpec = tween(200)) },
+            composable(getString(R.string.add_job_screen_route),
+                enterTransition = { slideInHorizontally(animationSpec = tween(200)) },
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
                 viewModel.appBarTitle = stringResource(id = R.string.add_job)
-                AddJobForm(viewModel=viewModel)
+                AddJobForm(viewModel = viewModel)
+            }
+            composable(getString(R.string.shop_screen),
+                enterTransition = { slideInHorizontally(animationSpec = tween(200)) },
+                exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
+                viewModel.appBarTitle = stringResource(id = R.string.my_shops)
+                ShopScreen(viewModel = viewModel, navController = navController)
             }
         }
     }
+
     @Composable
     public fun currentRoute(navController: NavHostController): String? {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
-        return navBackStackEntry?.destination?.route 
+        return navBackStackEntry?.destination?.route
     }
 }
 

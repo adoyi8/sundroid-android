@@ -14,8 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.android.gms.common.api.ApiException
 import com.sundroid.sundroid.R
+import com.sundroid.sundroid.data.local.dao.database_models.RoomUserEntity
 import com.sundroid.sundroid.google_auth.AuthResultContract
-import com.sundroid.sundroid.models.RoomUserEntity
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
 import kotlinx.coroutines.launch
 
@@ -38,7 +38,7 @@ fun AuthScreen(navController: NavController, viewModel: SundroidViewModel
                     coroutineScope.launch {
                         account.email?.let {
                             account.displayName?.let { it1 ->
-                                val user = RoomUserEntity(email = account.email, displayName = account.displayName, familyName = account.familyName, givenName = account.givenName,idToken= account.idToken,photoUrl = account.photoUrl.toString(),serverAuthCode= account.serverAuthCode)
+                                val user = RoomUserEntity(email = account.email!!, displayName = account.displayName, familyName = account.familyName, givenName = account.givenName,idToken= account.idToken,photoUrl = account.photoUrl.toString(),serverAuthCode= account.serverAuthCode)
                                 viewModel.insertUser(user)
                                 navController.navigate("dashboard_screen") {
                                     popUpTo("auth_screen") { inclusive = true }

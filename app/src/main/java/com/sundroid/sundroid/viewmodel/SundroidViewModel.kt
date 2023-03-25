@@ -9,11 +9,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.sundroid.sundroid.data.local.dao.SundroidLocalDatabase
-import com.sundroid.sundroid.models.AddJobFormState
+import com.sundroid.sundroid.data.local.dao.database_models.Job
+import com.sundroid.sundroid.data.local.dao.database_models.RoomUserEntity
+import com.sundroid.sundroid.data.local.dao.database_models.Shop
 import com.sundroid.sundroid.models.BottomSheetAction
-import com.sundroid.sundroid.models.Job
-import com.sundroid.sundroid.models.RoomUserEntity
-import com.sundroid.sundroid.repositories.UserRepository
+import com.sundroid.sundroid.models.JobFormState
+import com.sundroid.sundroid.models.ShopFormState
+import com.sundroid.sundroid.repositories.SundroidRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -21,7 +23,7 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
 
 
     private val userDao = SundroidLocalDatabase.getDatabase(application).userDao()
-    private val userRepository = UserRepository(userDao)
+    private val sundroidRepository = SundroidRepository(userDao)
     var isLoading by mutableStateOf(false)
     val isError by mutableStateOf(false)
     var bottomSheetAction = mutableStateOf(BottomSheetAction.ADD_JOB)
@@ -29,13 +31,15 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     val bottomSheetState = mutableStateOf<ModalBottomSheetState>(ModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden))
     var currentUser =  mutableStateOf<RoomUserEntity>(RoomUserEntity(1,"","","","","","",""));
 
-    val formState: AddJobFormState = AddJobFormState();
+    val jobFormState: JobFormState = JobFormState();
+    val shopFormState = ShopFormState();
     var appBarTitle by mutableStateOf("Sundroid")
-    val users: Flow<List<RoomUserEntity>> = userRepository.users
-    val jobs: Flow<List<Job>> = userRepository.jobs
+    val users: Flow<List<RoomUserEntity>> = sundroidRepository.users
+    val jobs: Flow<List<Job>> = sundroidRepository.jobs
+    val shops: Flow<List<Shop>> = sundroidRepository.shops
     fun insertUser(user: RoomUserEntity) = viewModelScope.launch {
-        userRepository.deleteAllUsers()
-        userRepository.insertUser(user)
+        sundroidRepository.deleteAllUsers()
+        sundroidRepository.insertUser(user)
         val streamedUsers = users.collect {
             if(it.isNotEmpty()) {
                 currentUser.value = it.first()
@@ -45,11 +49,11 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun deleteUser(user: RoomUserEntity) = viewModelScope.launch {
-        userRepository.deleteUser(user)
+        sundroidRepository.deleteUser(user)
     }
     fun deleteAllUsers() = viewModelScope.launch {
         isLoading = true;
-        userRepository.deleteAllUsers()
+        sundroidRepository.deleteAllUsers()
         println("delete all users called in sundroid viewmodel")
 
         isLoading= true
@@ -72,9 +76,17 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
 
 
     fun addJob() = viewModelScope.launch {
-        userRepository.insertJob(formState.getJobFromFormState())
+        sundroidRepository.insertJob(jobFormState.getJobFromFormState())
         hideBottomSheet()
-        formState.clearForm()
+        jobFormState.clearForm()
+    }
+    fun addShop() = viewModelScope.launch {
+        currentUser.value.email.let {
+            shopFormState.owner.value = currentUser.value.email
+        }
+        sundroidRepository.insertShop(shopFormState.getShopFromFormState())
+        hideBottomSheet()
+        shopFormState.clearForm()
     }
 
     @OptIn(ExperimentalMaterialApi::class)
@@ -89,8 +101,8 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun updateJob() = viewModelScope.launch {
-        userRepository.updateJob(formState.getJobFromFormState())
+        sundroidRepository.updateJob(jobFormState.getJobFromFormState())
         hideBottomSheet()
-        formState.clearForm()
+        jobFormState.clearForm()
     }
 }

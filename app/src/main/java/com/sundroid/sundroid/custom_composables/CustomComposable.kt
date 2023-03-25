@@ -44,3 +44,8 @@ fun SundroidTextHeader(text: String){
 
     Text(text = text, style = MaterialTheme.typography.headlineLarge)
 }
+@Composable
+fun SundroidText(text: String){
+
+    Text(text = text, style = MaterialTheme.typography.bodyMedium)
+}

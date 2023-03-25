@@ -4,24 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.sundroid.sundroid.models.Job
-import com.sundroid.sundroid.models.RoomUserEntity
+import com.sundroid.sundroid.data.local.dao.database_models.Job
+import com.sundroid.sundroid.data.local.dao.database_models.RoomUserEntity
+import com.sundroid.sundroid.data.local.dao.database_models.Shop
 
 
-
-
-
-
-
-
-
-
-
-
-
-@Database(entities = [RoomUserEntity::class, Job::class], version = 4, exportSchema = false)
+@Database(entities = [RoomUserEntity::class, Job::class, Shop::class], version = 6, exportSchema = false)
 abstract class SundroidLocalDatabase : RoomDatabase() {
-    abstract fun userDao(): UserDao
+    abstract fun userDao(): SundroidDao
 
     companion object {
         @Volatile

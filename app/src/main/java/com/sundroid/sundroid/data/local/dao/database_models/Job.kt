@@ -1,4 +1,4 @@
-package com.sundroid.sundroid.models
+package com.sundroid.sundroid.data.local.dao.database_models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter
 
 
 
-@Entity(tableName = "jobs")
+@Entity(tableName = "job")
 data class Job
 @JvmOverloads constructor(@PrimaryKey(autoGenerate = true) var jobId: Int=0,
                           var customerName: String="",
