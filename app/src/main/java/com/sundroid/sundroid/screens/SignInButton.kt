@@ -42,7 +42,6 @@ fun SignInButton(
             Spacer(modifier = Modifier.height(300.dp))
 
             if (isLoading) {
-
                 CircularProgressIndicator(
                     modifier = Modifier
                         .height(16.dp)
