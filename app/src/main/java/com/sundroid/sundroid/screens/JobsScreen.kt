@@ -20,5 +20,6 @@ fun JobScreen(){
 
 
         Text(text= "Job Screen")
+        Text(text= "Job Screen")
 
 }
