@@ -80,7 +80,7 @@ class MainActivity : ComponentActivity() {
                     val bottomNavigationItems = listOf(
                         Screen.Home,
                         Screen.Jobs,
-                        Screen.Staff
+                        Screen.StaffScreen
                     )
                     val items = listOf(
                         DrawerItem(R.drawable.ic_shop, "My Shops"),
@@ -210,6 +210,23 @@ class MainActivity : ComponentActivity() {
                                                 SundroidFAB(
                                                     R.drawable.ic_add,
                                                     "Register Shop",
+                                                    onclick = onClick
+                                                )
+                                            }
+                                            else if(currentRoute(navController = navController) == stringResource(
+                                                    id = R.string.staff_screen_route
+                                                )){
+                                                var onClick: () -> Unit = {
+                                                    viewModel.bottomSheetAction.value =
+                                                        BottomSheetAction.ADD_STAFF
+
+                                                    scope.launch {
+                                                        viewModel.showBottomSheet()
+                                                    }
+                                                }
+                                                SundroidFAB(
+                                                    R.drawable.ic_add,
+                                                    "Register Staff",
                                                     onclick = onClick
                                                 )
                                             }
@@ -350,7 +367,7 @@ class MainActivity : ComponentActivity() {
                 enterTransition = { slideInHorizontally(animationSpec = tween(200)) },
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
                 viewModel.appBarTitle = stringResource(id = R.string.staff)
-                StaffScreen()
+                StaffScreen(viewModel = viewModel, navController = navController)
             }
             composable(getString(R.string.dashboard_route),
                 enterTransition = { slideInHorizontally(animationSpec = tween(200)) },

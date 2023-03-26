@@ -12,9 +12,11 @@ import com.sundroid.sundroid.data.local.dao.SundroidLocalDatabase
 import com.sundroid.sundroid.data.local.dao.database_models.Job
 import com.sundroid.sundroid.data.local.dao.database_models.RoomUserEntity
 import com.sundroid.sundroid.data.local.dao.database_models.Shop
+import com.sundroid.sundroid.data.local.dao.database_models.Staff
 import com.sundroid.sundroid.models.BottomSheetAction
 import com.sundroid.sundroid.models.JobFormState
 import com.sundroid.sundroid.models.ShopFormState
+import com.sundroid.sundroid.models.StaffFormState
 import com.sundroid.sundroid.repositories.SundroidRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -33,10 +35,12 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
 
     val jobFormState: JobFormState = JobFormState();
     val shopFormState = ShopFormState();
+    val staffFormState = StaffFormState();
     var appBarTitle by mutableStateOf("Sundroid")
     val users: Flow<List<RoomUserEntity>> = sundroidRepository.users
     val jobs: Flow<List<Job>> = sundroidRepository.jobs
     val shops: Flow<List<Shop>> = sundroidRepository.shops
+    val staff: Flow<List<Staff>> = sundroidRepository.staff
     fun insertUser(user: RoomUserEntity) = viewModelScope.launch {
         sundroidRepository.deleteAllUsers()
         sundroidRepository.insertUser(user)

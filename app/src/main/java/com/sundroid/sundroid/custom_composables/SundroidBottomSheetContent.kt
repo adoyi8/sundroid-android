@@ -28,6 +28,12 @@ fun SundroidBottomSheetContent(viewModel: SundroidViewModel){
         BottomSheetAction.VIEW_SHOP->{
             UpdateShopForm(viewModel = viewModel)
         }
+        BottomSheetAction.ADD_STAFF->{
+            AddStaffForm(viewModel = viewModel)
+        }
+        BottomSheetAction.UPDATE_STAFF ->{
+            UpdateStaffForm(viewModel = viewModel)
+        }
         else ->{
 
         }

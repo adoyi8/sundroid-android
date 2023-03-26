@@ -4,6 +4,7 @@ import androidx.room.*
 import com.sundroid.sundroid.data.local.dao.database_models.Job
 import com.sundroid.sundroid.data.local.dao.database_models.RoomUserEntity
 import com.sundroid.sundroid.data.local.dao.database_models.Shop
+import com.sundroid.sundroid.data.local.dao.database_models.Staff
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -43,4 +44,17 @@ interface SundroidDao {
     @Update
     suspend fun updateShop(shop: Shop)
 
+
+
+    @Query("SELECT * FROM staff")
+    fun getAllStaff(): Flow<List<Staff>>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addStaff(staffDBModel: Staff)
+    @Delete
+    suspend fun removeStaff(staff: Staff)
+    @Query("DELETE FROM staff")
+    suspend fun deleteAllStaff()
+
+    @Update
+    suspend fun updateStaff(staff: Staff)
 }
