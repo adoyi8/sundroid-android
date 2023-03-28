@@ -19,8 +19,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.sundroid.sundroid.R
-import com.sundroid.sundroid.models.BottomSheetAction
 import com.sundroid.sundroid.data.local.dao.database_models.Job
+import com.sundroid.sundroid.models.BottomSheetAction
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
 
 
@@ -44,11 +44,13 @@ fun MyCard(job: Job, viewModel: SundroidViewModel) {
         viewModel.jobFormState.convertToFormState(job)
         viewModel.showBottomSheet()
     }
+
     Card(
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth()
             .clickable(onClick = onClick)
+
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

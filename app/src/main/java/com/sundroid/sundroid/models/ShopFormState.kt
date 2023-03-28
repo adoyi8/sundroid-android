@@ -50,14 +50,21 @@ class ShopFormState(){
                name = name.value,
                address = address.value,
                owner = owner.value,
-               location = location.value,
-               shopId = shopId.value,
-
-
+               location = location.value
           )
+
+
+
+
+
+
+
+
+          println("Css 1 "+ shopId.value)
           if(shopId.value>=0){
                shop.shopId = shopId.value
           }
+          println("Css 2 "+ shopId.value)
           return shop;
 
      }

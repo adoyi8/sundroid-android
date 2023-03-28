@@ -22,6 +22,15 @@ fun SundroidFAB(icon: Int, text: String, onclick: ()->Unit = {}) {
 
 
 
+
+
+
+
+
+
+
+
+
         Row(modifier = Modifier.padding(5.dp), verticalAlignment = Alignment.CenterVertically ) {
             Image(painter = painterResource(id = icon), "Localized description")
             Text(text = text, style = MaterialTheme.typography.labelMedium)

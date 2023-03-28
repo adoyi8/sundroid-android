@@ -77,7 +77,7 @@ fun SplashScreen(navController: NavController, viewModel: SundroidViewModel) {
             }
             else{
 
-                navController.navigate("shop_screen_route") {
+                navController.navigate("dashboard_screen") {
                     popUpTo("splash_screen") { inclusive = true }
 
                 }

@@ -61,21 +61,15 @@ class MainActivity : ComponentActivity() {
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-        setContent {
+        setContent() {
             val viewModel: SundroidViewModel = viewModel()
-
-
             val drawerState = rememberDrawerState(DrawerValue.Closed)
             val scope = rememberCoroutineScope()
-
             SundroidTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-
-                    ) {
+                ) {
                     val navController = rememberAnimatedNavController()
                     val bottomNavigationItems = listOf(
                         Screen.Home,
@@ -171,15 +165,13 @@ class MainActivity : ComponentActivity() {
 
                             ModalBottomSheetLayout(
                                 sheetState = viewModel.bottomSheetState.value,
+                                sheetBackgroundColor = MaterialTheme.colorScheme.background,
                                 sheetContent = { SundroidBottomSheetContent(viewModel = viewModel) },
                                 content = {
-
                                     Scaffold(
-
-
                                         floatingActionButton = {
                                             if (currentRoute(navController = navController) == stringResource(
-                                                    id = R.string.dashboard_route
+                                                    id = R.string.job_screen_route
                                                 )
                                             ) {
                                                 var onClick: () -> Unit = {
@@ -195,10 +187,10 @@ class MainActivity : ComponentActivity() {
                                                     "Add Job",
                                                     onclick = onClick
                                                 )
-                                            }
-                                            else if(currentRoute(navController = navController) == stringResource(
+                                            } else if (currentRoute(navController = navController) == stringResource(
                                                     id = R.string.shop_screen
-                                                )){
+                                                )
+                                            ) {
                                                 var onClick: () -> Unit = {
                                                     viewModel.bottomSheetAction.value =
                                                         BottomSheetAction.ADD_SHOP
@@ -212,10 +204,10 @@ class MainActivity : ComponentActivity() {
                                                     "Register Shop",
                                                     onclick = onClick
                                                 )
-                                            }
-                                            else if(currentRoute(navController = navController) == stringResource(
+                                            } else if (currentRoute(navController = navController) == stringResource(
                                                     id = R.string.staff_screen_route
-                                                )){
+                                                )
+                                            ) {
                                                 var onClick: () -> Unit = {
                                                     viewModel.bottomSheetAction.value =
                                                         BottomSheetAction.ADD_STAFF
@@ -361,7 +353,7 @@ class MainActivity : ComponentActivity() {
                 enterTransition = { slideInHorizontally(animationSpec = tween(200)) },
                 exitTransition = { slideOutHorizontally(animationSpec = tween(500)) }) {
                 viewModel.appBarTitle = stringResource(id = R.string.jobs)
-                JobScreen()
+                JobScreen(viewModel = viewModel, navController = navController)
             }
             composable(getString(R.string.staff_screen_route),
                 enterTransition = { slideInHorizontally(animationSpec = tween(200)) },

@@ -10,7 +10,7 @@ import com.sundroid.sundroid.data.local.dao.database_models.Shop
 import com.sundroid.sundroid.data.local.dao.database_models.Staff
 
 
-@Database(entities = [RoomUserEntity::class, Job::class, Shop::class, Staff::class], version = 7, exportSchema = false)
+@Database(entities = [RoomUserEntity::class, Job::class, Shop::class, Staff::class], version = 8, exportSchema = false)
 abstract class SundroidLocalDatabase : RoomDatabase() {
     abstract fun userDao(): SundroidDao
 
