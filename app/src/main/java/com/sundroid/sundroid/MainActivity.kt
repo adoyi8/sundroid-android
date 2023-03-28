@@ -20,13 +20,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -37,10 +35,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.sundroid.sundroid.custom_composables.AddJobForm
-import com.sundroid.sundroid.custom_composables.SundroidAlertDialog
-import com.sundroid.sundroid.custom_composables.SundroidBottomSheetContent
-import com.sundroid.sundroid.custom_composables.SundroidFAB
+import com.sundroid.sundroid.custom_composables.*
 import com.sundroid.sundroid.data.AuthScreen
 import com.sundroid.sundroid.google_auth.getGoogleSignInClient
 import com.sundroid.sundroid.models.BottomSheetAction
@@ -113,11 +108,8 @@ class MainActivity : ComponentActivity() {
 
                                     Column(modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)) {
                                         Spacer(modifier = Modifier.height(25.dp))
-                                        Text(
-                                            text = "Sundroid",
-                                            style = MaterialTheme.typography.headlineLarge,
-                                            color = MaterialTheme.colorScheme.primary,
-                                            modifier = Modifier.padding(horizontal = 15.dp)
+                                        SundroidTextKanitBold(
+                                            text = "Sundroid"
                                         )
                                         Spacer(modifier = Modifier.height(25.dp))
                                         items.forEach { item ->
@@ -128,7 +120,7 @@ class MainActivity : ComponentActivity() {
                                                         contentDescription = null
                                                     )
                                                 },
-                                                label = { Text(item.title) },
+                                                label = { SundroidText(item.title) },
                                                 selected = item == selectedItem.value,
                                                 onClick = {
                                                     scope.launch { drawerState.close() }
@@ -234,10 +226,8 @@ class MainActivity : ComponentActivity() {
                                                 CenterAlignedTopAppBar(
                                                     title = {
 
-                                                        Text(
+                                                        SundroidText(
                                                             viewModel.appBarTitle,
-                                                            maxLines = 1,
-                                                            overflow = TextOverflow.Ellipsis
                                                         )
                                                     },
                                                     navigationIcon = {
@@ -264,10 +254,8 @@ class MainActivity : ComponentActivity() {
                                                 CenterAlignedTopAppBar(
                                                     title = {
 
-                                                        Text(
+                                                        SundroidText(
                                                             viewModel.appBarTitle,
-                                                            maxLines = 1,
-                                                            overflow = TextOverflow.Ellipsis
                                                         )
                                                     },
 
