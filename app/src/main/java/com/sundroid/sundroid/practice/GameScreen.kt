@@ -171,9 +171,6 @@ private fun FinalScoreDialog(
     val activity = (LocalContext.current as Activity)
     AlertDialog(
         onDismissRequest = {
-            // Dismiss the dialog when the user clicks outside the dialog or on the back
-            // button. If you want to disable that functionality, simply use an empty
-            // onCloseRequest.
         },
         title = { Text(stringResource(R.string.congratulations)) },
         text = { Text(stringResource(R.string.you_scored, score)) },
@@ -199,6 +196,7 @@ private fun FinalScoreDialog(
 @Composable
 fun GameScreenPreview() {
     var a = 5
+    a= 5
     SundroidTheme{
         GameScreen()
     }
