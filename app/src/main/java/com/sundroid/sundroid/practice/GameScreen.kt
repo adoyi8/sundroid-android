@@ -198,8 +198,6 @@ private fun FinalScoreDialog(
 @Preview(showBackground = true)
 @Composable
 fun GameScreenPreview() {
-    var a = 0;
-    a= 5
     SundroidTheme{
         GameScreen()
     }
