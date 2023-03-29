@@ -97,19 +97,10 @@ fun MyCard(job: Job, viewModel: SundroidViewModel) {
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(20.dp))
-                Row() {
-                    StatusView(R.drawable.ic_sync_status, job.syncStatus)
-                    StatusView(R.drawable.ic_payment_status, job.paymentStatus)
-                    StatusView(R.drawable.ic_done, job.doneStatus)
-                    StatusView(R.drawable.ic_delivered, job.deliveredStatus)
-                }
+
             }
 
             Column() {
-                val modifier = Modifier
-                    .padding(0.dp, 16.dp, 16.dp, 0.dp)
-                    .width(200.dp)
                         SundroidTextAmount(
                             text = job.amount.toString()
                         )
@@ -117,6 +108,21 @@ fun MyCard(job: Job, viewModel: SundroidViewModel) {
 
                 }
             }
+        Spacer(modifier = Modifier.height(20.dp))
+        Row(modifier = Modifier
+            .width(370.dp)
+            .fillMaxWidth().height(20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween) {
+            StatusView(R.drawable.ic_sync_status, job.syncStatus)
+            StatusView(R.drawable.ic_payment_status, job.paymentStatus)
+            StatusView(R.drawable.ic_done, job.doneStatus)
+            StatusView(R.drawable.ic_delivered, job.deliveredStatus)
+            Spacer(modifier = Modifier.width(100.dp))
+            DisplayLocalDate(modifier = Modifier)
+
+
+        }
         }
 
     }

@@ -11,16 +11,11 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -149,15 +144,11 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         drawerState = drawerState,
-
-
-                        content =
-                        {
-
-
+                        content = {
                             ModalBottomSheetLayout(
                                 sheetState = viewModel.bottomSheetState.value,
-                                sheetBackgroundColor = MaterialTheme.colorScheme.background,
+                                sheetBackgroundColor = MaterialTheme.colorScheme.surface,
+                                sheetContentColor = contentColorFor(backgroundColor = MaterialTheme.colorScheme.surface),
                                 sheetContent = { SundroidBottomSheetContent(viewModel = viewModel) },
                                 content = {
                                     Scaffold(
