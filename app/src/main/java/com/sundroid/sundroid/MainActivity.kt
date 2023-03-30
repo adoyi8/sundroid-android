@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
@@ -146,10 +146,26 @@ class MainActivity : ComponentActivity() {
                         drawerState = drawerState,
                         content = {
                             ModalBottomSheetLayout(
+
                                 sheetState = viewModel.bottomSheetState.value,
-                                sheetBackgroundColor = MaterialTheme.colorScheme.surface,
-                                sheetContentColor = contentColorFor(backgroundColor = MaterialTheme.colorScheme.surface),
-                                sheetContent = { SundroidBottomSheetContent(viewModel = viewModel) },
+                                sheetBackgroundColor = MaterialTheme.colorScheme.background,
+
+                                sheetContentColor = contentColorFor(backgroundColor = MaterialTheme.colorScheme.background),
+                                sheetContent = {
+
+
+
+
+                                    val transition = rememberInfiniteTransition()
+                                    val sheetContentAlpha by transition.animateFloat(
+                                        initialValue = 0f,
+                                        targetValue = 1f,
+                                        animationSpec = infiniteRepeatable(
+                                            animation = tween(durationMillis = 1000, easing = LinearEasing),
+                                            repeatMode = RepeatMode.Reverse
+                                        )
+                                    )
+                                    SundroidBottomSheetContent(viewModel = viewModel) },
                                 content = {
                                     Scaffold(
                                         floatingActionButton = {

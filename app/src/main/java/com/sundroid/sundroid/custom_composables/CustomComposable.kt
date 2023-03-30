@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sundroid.sundroid.R
 import com.sundroid.sundroid.ui.theme.Tilt
-import java.text.DateFormat
-import java.util.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -89,10 +89,12 @@ fun SundroidTextKanitBold(text: String){
 
 }
 @Composable
-fun DisplayLocalDate(modifier: Modifier) {
-    val currentDate = Calendar.getInstance().time
-    val dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault())
+fun DisplayLocalDate(modifier: Modifier, text: String) {
 
+
+    val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+    val dateTime = LocalDateTime.parse(text, formatter)
+    val formattedDateTime = dateTime.format(DateTimeFormatter.ofPattern("HH:mm, dd MMM"))
     val tilt = FontFamily(
         Font(R.font.tilt_neon),
         Font(R.font.tilt_warp, FontWeight.Bold),
@@ -103,7 +105,7 @@ fun DisplayLocalDate(modifier: Modifier) {
         Font(R.font.kanit_bold),
         Font(R.font.kanit_medium),
     )
-    Text(text =  dateFormat.format(currentDate) , style = TextStyle(fontSize = 13.sp, fontFamily = tilt))
+    Text(text =  formattedDateTime , style = TextStyle(fontSize = 13.sp, fontFamily = tilt))
 
 }
 fun formatCurrency(amount: String): String{

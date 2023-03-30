@@ -1,5 +1,8 @@
 package com.sundroid.sundroid.custom_composables
 
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,32 +28,47 @@ import com.sundroid.sundroid.models.BottomSheetAction
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
 
 
-
-
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun JobList(
     @PreviewParameter(MyListProvider::class) jobs: List<Job>,
     viewModel: SundroidViewModel
 ) {
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(space = 0.dp, alignment =  Alignment.Top)) {
-        items(jobs) { job ->
-            MyCard(job, viewModel)
+
+
+    Box() {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(
+                space = 0.dp,
+                alignment = Alignment.Top
+            ),
+        ) {
+            items(jobs, key = { it.jobId }) { job ->
+                MyCard(
+                    job, viewModel, modifier = Modifier.animateItemPlacement(
+                        animationSpec = tween(
+                            durationMillis = 2000,
+                            easing = LinearOutSlowInEasing,
+                        )
+                    )
+                )
+            }
         }
     }
 }
 
 
 @Composable
-fun MyCard(job: Job, viewModel: SundroidViewModel) {
+fun MyCard(job: Job, viewModel: SundroidViewModel, modifier: Modifier) {
     var onClick: () -> Unit = {
         viewModel.bottomSheetAction.value = BottomSheetAction.UPDATE_JOB
         viewModel.jobFormState.convertToFormState(job)
         viewModel.showBottomSheet()
     }
-     val tilt = FontFamily(
+    val tilt = FontFamily(
         Font(R.font.tilt_neon),
         Font(R.font.tilt_warp, FontWeight.Bold),
-         Font(R.font.tilt_warp, FontWeight.Bold, FontStyle.Italic),
+        Font(R.font.tilt_warp, FontWeight.Bold, FontStyle.Italic),
     )
     val kanit = FontFamily(
         Font(R.font.kanit_extrabold),
@@ -59,11 +77,11 @@ fun MyCard(job: Job, viewModel: SundroidViewModel) {
     )
 
     Card(
-        modifier = Modifier
-            .padding(7.dp)
+        modifier = modifier
+            .padding(5.dp)
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 11.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 9.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -71,7 +89,7 @@ fun MyCard(job: Job, viewModel: SundroidViewModel) {
         ) {
             Column(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(start = 16.dp,end=16.dp)
             ) {
                 job.customerName?.let {
                     Surface(
@@ -101,40 +119,43 @@ fun MyCard(job: Job, viewModel: SundroidViewModel) {
             }
 
             Column() {
-                        SundroidTextAmount(
-                            text = job.amount.toString()
-                        )
+                SundroidTextAmount(
+                    text = job.amount.toString()
+                )
 
 
-                }
             }
+        }
         Spacer(modifier = Modifier.height(20.dp))
-        Row(modifier = Modifier
-            .width(370.dp)
-            .fillMaxWidth().height(20.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween) {
-            StatusView(R.drawable.ic_sync_status, job.syncStatus)
-            StatusView(R.drawable.ic_payment_status, job.paymentStatus)
-            StatusView(R.drawable.ic_done, job.doneStatus)
-            StatusView(R.drawable.ic_delivered, job.deliveredStatus)
-            Spacer(modifier = Modifier.width(100.dp))
-            DisplayLocalDate(modifier = Modifier)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth().padding(start =  16.dp, end = 16.dp, bottom = 10.dp)
+                .height(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(Modifier.weight(5f)){
+                StatusView(R.drawable.ic_sync_status, job.syncStatus, modifier = Modifier)
+                StatusView(R.drawable.ic_payment_status, job.paymentStatus, modifier = Modifier)
+                StatusView(R.drawable.ic_done, job.doneStatus, modifier = Modifier)
+                StatusView(R.drawable.ic_delivered, job.deliveredStatus, modifier = Modifier)
+
+            }
+            Spacer(modifier = Modifier.weight(8f))
 
 
+            DisplayLocalDate(modifier = Modifier.weight(8f), job.timeReceived)
         }
-        }
-
     }
+}
 
 
 @Composable
-fun StatusView(icon: Int, state: Boolean) {
+fun StatusView(icon: Int, state: Boolean, modifier: Modifier) {
     Image(
         painter = painterResource(id = icon),
         contentDescription = "Hello",
         colorFilter = getColorFilter(state),
-        modifier = Modifier
+        modifier = modifier
             .width(15.dp)
             .padding(1.dp)
     )
@@ -145,6 +166,7 @@ class MyListProvider : PreviewParameterProvider<ArrayList<Job>> {
         Job.getSampleJobs()
     )
 }
+
 fun getColorFilter(state: Boolean): ColorFilter {
     return if (state) ColorFilter.tint(Color.Green) else ColorFilter.tint(Color.Gray)
 }

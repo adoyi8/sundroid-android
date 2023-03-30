@@ -4,7 +4,9 @@ package com.sundroid.sundroid.screens
 import android.annotation.SuppressLint
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.sundroid.sundroid.R
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
 
 
@@ -22,7 +24,7 @@ import com.sundroid.sundroid.viewmodel.SundroidViewModel
 @Composable
 fun DashBoard(viewModel: SundroidViewModel, navController: NavController) {
 
-    navController.navigate("shop_screen_route") {
+    navController.navigate(stringResource(id = R.string.job_screen_route)) {
         popUpTo("splash_screen") { inclusive = true }
 
     }

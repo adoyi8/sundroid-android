@@ -25,38 +25,41 @@ import com.sundroid.sundroid.viewmodel.SundroidViewModel
 fun JobScreen(viewModel: SundroidViewModel, navController: NavController) {
 
 
-        val jobs by viewModel.jobs.collectAsState(
-                initial = emptyList()
-        )
+    val jobs by viewModel.jobs.collectAsState(
+        initial = emptyList()
+    )
 
 
-        LaunchedEffect(true) {
-                viewModel.getCurrentUser();
-                if (viewModel.currentUser.value == null) {
-                        navController.navigate("auth_screen") {
-                                popUpTo("splash_screen") { inclusive = true }
-                        }
-                }
+    LaunchedEffect(true) {
+        viewModel.getCurrentUser();
+        if (viewModel.currentUser.value == null) {
+            navController.navigate("auth_screen") {
+                popUpTo("splash_screen") { inclusive = true }
+            }
         }
+    }
 
-        if (jobs.isNotEmpty()) {
+    if (jobs.isNotEmpty()) {
 
-                JobList(jobs, viewModel)
+        JobList(jobs, viewModel)
 
-        } else {
-                Box(contentAlignment = Alignment.Center){
-                        Column(verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(400.dp)) {
-                                SundroidText("There are currently no jobs available")
-                                var onClick: () -> Unit = {
-                                        viewModel.bottomSheetAction.value =
-                                                BottomSheetAction.ADD_JOB
-                                                viewModel.showBottomSheet()
-                                }
-                                SundroidButton(onClick = onClick, text = "New Job")
-                        }
+    } else {
+        Box(contentAlignment = Alignment.Center) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.width(400.dp)
+            ) {
+                SundroidText("There are currently no jobs available")
+                var onClick: () -> Unit = {
+                    viewModel.bottomSheetAction.value =
+                        BottomSheetAction.ADD_JOB
+                    viewModel.showBottomSheet()
                 }
+                SundroidButton(onClick = onClick, text = "New Job")
+            }
         }
+    }
 
 
 }

@@ -36,38 +36,21 @@ class GameViewModel : ViewModel() {
 
     var userGuess by mutableStateOf("")
         private set
-
     // Set of words used in the game
     private var usedWords: MutableSet<String> = mutableSetOf()
     private lateinit var currentWord: String
-
     init {
         resetGame()
     }
-
-    /*
-     * Re-initializes the game data to restart the game.
-     */
     fun resetGame() {
         usedWords.clear()
         _uiState.value = GameUiState(currentScrambledWord = pickRandomWordAndShuffle())
     }
-
-    /*
-     * Update the user's guess
-     */
     fun updateUserGuess(guessedWord: String){
         userGuess = guessedWord
     }
-
-    /*
-     * Checks if the user's guess is correct.
-     * Increases the score accordingly.
-     */
     fun checkUserGuess() {
         if (userGuess.equals(currentWord, ignoreCase = true)) {
-            // User's guess is correct, increase the score
-            // and call updateGameState() to prepare the game for next round
             val updatedScore = _uiState.value.score.plus(SCORE_INCREASE)
             updateGameState(updatedScore)
         } else {

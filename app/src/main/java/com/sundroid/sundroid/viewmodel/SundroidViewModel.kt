@@ -20,6 +20,8 @@ import com.sundroid.sundroid.models.StaffFormState
 import com.sundroid.sundroid.repositories.SundroidRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class SundroidViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -27,7 +29,8 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     private val userDao = SundroidLocalDatabase.getDatabase(application).userDao()
     private val sundroidRepository = SundroidRepository(userDao)
     var isLoading by mutableStateOf(false)
-    val isError by mutableStateOf(false)
+    var animateList by mutableStateOf(false)
+    val isError  = mutableStateOf(false)
     var bottomSheetAction = mutableStateOf(BottomSheetAction.ADD_JOB)
     @OptIn(ExperimentalMaterialApi::class)
     val bottomSheetState = mutableStateOf<ModalBottomSheetState>(ModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden))
@@ -79,7 +82,17 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
 
 
 
+
+
+
+
+
+
+
+
+
     fun addJob() = viewModelScope.launch {
+        jobFormState.timeReceived.value = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
         sundroidRepository.insertJob(jobFormState.getJobFromFormState())
         hideBottomSheet()
         jobFormState.clearForm()
