@@ -11,13 +11,17 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -55,7 +59,8 @@ class MainActivity : ComponentActivity() {
             val viewModel: SundroidViewModel = viewModel()
             val drawerState = rememberDrawerState(DrawerValue.Closed)
             val scope = rememberCoroutineScope()
-            SundroidTheme {
+            val sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+            SundroidTheme() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -75,12 +80,31 @@ class MainActivity : ComponentActivity() {
                     val openDialog = remember { mutableStateOf(false) }
 
 
+                    val animationSpec = TweenSpec<Float>(
+                        durationMillis = 10000,
+                        easing = FastOutSlowInEasing
+                    )
+
+                    var modalState by remember { mutableStateOf(ModalBottomSheetValue.Hidden) }
+
+                    val sheetState =
+                        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+                    LaunchedEffect(true) {
+                        sheetState.animateTo(
+                            targetValue = modalState,
+                            anim = animationSpec
+
+                        )
+
+                    }
+                    viewModel.bottomSheetState.value = sheetState
+
+
                     if (openDialog.value) {
 
                         SundroidAlertDialog(openDialog, onYesClick = {
                             openDialog.value = false
                             viewModel.logOut()
-                            println("Blessing 4 Hello")
                             getGoogleSignInClient(this).signOut()
                             navController.navigate("auth_screen") {
                                 popUpTo("splash_screen") { inclusive = true }
@@ -94,13 +118,10 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.width(50.dp),
                         drawerContent = {
                             ModalDrawerSheet {
-
                                 Box(
                                     Modifier
                                         .width(300.dp) // Set the width of the content here
                                 ) {
-
-
                                     Column(modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)) {
                                         Spacer(modifier = Modifier.height(25.dp))
                                         SundroidTextKanitBold(
@@ -144,9 +165,11 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         drawerState = drawerState,
+
                         content = {
                             ModalBottomSheetLayout(
-
+                                sheetShape = sheetShape,
+                                modifier = Modifier.clip(sheetShape),
                                 sheetState = viewModel.bottomSheetState.value,
                                 sheetBackgroundColor = MaterialTheme.colorScheme.background,
 
@@ -154,18 +177,10 @@ class MainActivity : ComponentActivity() {
                                 sheetContent = {
 
 
-
-
                                     val transition = rememberInfiniteTransition()
-                                    val sheetContentAlpha by transition.animateFloat(
-                                        initialValue = 0f,
-                                        targetValue = 1f,
-                                        animationSpec = infiniteRepeatable(
-                                            animation = tween(durationMillis = 1000, easing = LinearEasing),
-                                            repeatMode = RepeatMode.Reverse
-                                        )
-                                    )
-                                    SundroidBottomSheetContent(viewModel = viewModel) },
+
+                                    SundroidBottomSheetContent(viewModel = viewModel)
+                                },
                                 content = {
                                     Scaffold(
                                         floatingActionButton = {
@@ -178,6 +193,7 @@ class MainActivity : ComponentActivity() {
                                                         BottomSheetAction.ADD_JOB
 
                                                     scope.launch {
+                                                        sheetState.show()
                                                         viewModel.showBottomSheet()
                                                     }
                                                 }
@@ -195,6 +211,7 @@ class MainActivity : ComponentActivity() {
                                                         BottomSheetAction.ADD_SHOP
 
                                                     scope.launch {
+
                                                         viewModel.showBottomSheet()
                                                     }
                                                 }

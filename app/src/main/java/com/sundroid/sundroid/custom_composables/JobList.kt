@@ -34,8 +34,6 @@ fun JobList(
     @PreviewParameter(MyListProvider::class) jobs: List<Job>,
     viewModel: SundroidViewModel
 ) {
-
-
     Box() {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(
@@ -133,15 +131,13 @@ fun MyCard(job: Job, viewModel: SundroidViewModel, modifier: Modifier) {
                 .height(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(Modifier.weight(5f)){
+            Row(modifier = Modifier.weight(5f)){
                 StatusView(R.drawable.ic_sync_status, job.syncStatus, modifier = Modifier)
                 StatusView(R.drawable.ic_payment_status, job.paymentStatus, modifier = Modifier)
                 StatusView(R.drawable.ic_done, job.doneStatus, modifier = Modifier)
                 StatusView(R.drawable.ic_delivered, job.deliveredStatus, modifier = Modifier)
-
             }
             Spacer(modifier = Modifier.weight(8f))
-
 
             DisplayLocalDate(modifier = Modifier.weight(8f), job.timeReceived)
         }

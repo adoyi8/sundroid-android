@@ -34,13 +34,13 @@ fun AddStaffForm(
          SundroidTextHeader(text = "Register Staffp")
         SundroidTextField("Name", onChange = {
             viewModel.staffFormState.name.value = it
-        }, viewModel = viewModel, value = viewModel.staffFormState.name.value)
+        }, viewModel = viewModel, value = viewModel.staffFormState.name.value, label = "Name")
         SundroidTextField("Shop Address", onChange = {
             viewModel.staffFormState.email.value = it
-        }, viewModel = viewModel, value = viewModel.staffFormState.email.value)
+        }, viewModel = viewModel, value = viewModel.staffFormState.email.value, label = "Address")
         SundroidTextField("Phone", onChange = {
             viewModel.staffFormState.phone.value = it
-        }, viewModel = viewModel, value = viewModel.staffFormState.phone.value)
+        }, viewModel = viewModel, value = viewModel.staffFormState.phone.value, label = "Phone")
         SundroidButton(onClick = { viewModel.addShop() }, text = "Add Staff")
     }
 }
@@ -60,13 +60,13 @@ fun UpdateStaffForm(
         SundroidTextHeader(text = viewModel.staffFormState.name.value  )
         SundroidTextField("Name", onChange = {
             viewModel.staffFormState.name.value = it
-        }, viewModel = viewModel, value = viewModel.staffFormState.name.value)
+        }, viewModel = viewModel, value = viewModel.staffFormState.name.value, label = "Name")
         SundroidTextField("Shop Address", onChange = {
             viewModel.staffFormState.email.value = it
-        }, viewModel = viewModel, value = viewModel.staffFormState.email.value)
+        }, viewModel = viewModel, value = viewModel.staffFormState.email.value, label = "Email")
         SundroidTextField("Phone", onChange = {
             viewModel.staffFormState.phone.value = it
-        }, viewModel = viewModel, value = viewModel.staffFormState.phone.value)
+        }, viewModel = viewModel, value = viewModel.staffFormState.phone.value, label = "Phone")
         SundroidButton(onClick = { viewModel.addShop() }, text = "Update Staff")
     }
 }

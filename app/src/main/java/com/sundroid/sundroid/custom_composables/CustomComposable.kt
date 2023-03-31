@@ -15,7 +15,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sundroid.sundroid.R
-import com.sundroid.sundroid.ui.theme.Tilt
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -27,9 +26,14 @@ fun SplashScreenText(text: String, visibility: Boolean){
     val modifier = Modifier
 
     val textFontSize = 50.sp
+    val tilt = FontFamily(
+        Font(R.font.tilt_neon),
+        Font(R.font.tilt_warp, FontWeight.Bold),
+        Font(R.font.tilt_warp, FontWeight.Bold, FontStyle.Italic),
+    )
     AnimatedVisibility(visible = visibility) {
 
-        Text(text = text, modifier = modifier, color = color, fontSize = textFontSize, fontFamily = Tilt, fontWeight = FontWeight.Bold)
+        Text(text = text, modifier = modifier, color = color, fontSize = textFontSize, fontFamily = tilt, fontWeight = FontWeight.Bold)
 
     }
 }
@@ -43,7 +47,17 @@ fun SundroidButton(onClick: ()->Unit, text: String){
 @Composable
 fun SundroidTextHeader(text: String){
 
-    Text(text = text, style = MaterialTheme.typography.headlineLarge)
+    val tilt = FontFamily(
+        Font(R.font.tilt_neon),
+        Font(R.font.tilt_warp, FontWeight.Bold),
+        Font(R.font.tilt_warp, FontWeight.Bold, FontStyle.Italic),
+    )
+    val kanit = FontFamily(
+        Font(R.font.kanit_extrabold),
+        Font(R.font.kanit_bold),
+        Font(R.font.kanit_medium),
+    )
+    Text(text = text, style = TextStyle(fontSize = 18.sp, fontFamily = tilt, fontWeight = FontWeight.Bold ))
 }
 @Composable
 fun SundroidText(text: String){

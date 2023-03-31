@@ -34,13 +34,13 @@ fun AddShopForm(
          SundroidTextHeader(text = "Register Shop")
         SundroidTextField("Shop Name", onChange = {
             viewModel.shopFormState.name.value = it
-        }, viewModel = viewModel, value = viewModel.shopFormState.name.value)
+        }, viewModel = viewModel, value = viewModel.shopFormState.name.value, label = "Shop Name")
         SundroidTextField("Shop Address", onChange = {
             viewModel.shopFormState.address.value = it
-        }, viewModel = viewModel, value = viewModel.shopFormState.address.value)
+        }, viewModel = viewModel, value = viewModel.shopFormState.address.value, label = "Address")
         SundroidTextField("Phone", onChange = {
             viewModel.shopFormState.phone.value = it
-        }, viewModel = viewModel, value = viewModel.shopFormState.phone.value)
+        }, viewModel = viewModel, value = viewModel.shopFormState.phone.value, label = "Phone")
         SundroidButton(onClick = { viewModel.addShop() }, text = "Add Shop")
     }
 }
@@ -67,13 +67,13 @@ fun UpdateShopForm(
         SundroidTextHeader(text = viewModel.shopFormState.name.value)
         SundroidTextField("Shop Name", onChange = {
             viewModel.shopFormState.name.value = it
-        }, viewModel = viewModel, value = viewModel.shopFormState.name.value)
+        }, viewModel = viewModel, value = viewModel.shopFormState.name.value, label = "Name")
         SundroidTextField("Shop Address", onChange = {
             viewModel.shopFormState.address.value = it
-        }, viewModel = viewModel, value = viewModel.shopFormState.address.value)
+        }, viewModel = viewModel, value = viewModel.shopFormState.address.value, label = "Address")
         SundroidTextField("Phone", onChange = {
             viewModel.shopFormState.phone.value = it
-        }, viewModel = viewModel, value = viewModel.shopFormState.phone.value)
+        }, viewModel = viewModel, value = viewModel.shopFormState.phone.value, label = "Phone")
       //  SundroidButton(onClick = { viewModel.addJob() }, text = "Update Shop")
     }
 }

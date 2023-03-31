@@ -51,7 +51,6 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
             if(it.isNotEmpty()) {
                 currentUser.value = it.first()
             }
-
         }
     }
 

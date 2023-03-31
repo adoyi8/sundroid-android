@@ -25,10 +25,17 @@ import com.sundroid.sundroid.viewmodel.SundroidViewModel
 
 
 
+
+
+
+
+
+
+
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SundroidTextField(placeholder: String="", onChange:(String)->Unit={}, viewModel: SundroidViewModel, value: String){
+fun SundroidTextField(placeholder: String="", onChange:(String)->Unit={}, viewModel: SundroidViewModel, value: String, label: String){
     val modifier: Modifier = Modifier
     val leadingIcon: @Composable (() -> Unit)? = null
     val imeAction: ImeAction = ImeAction.Next
@@ -36,6 +43,7 @@ fun SundroidTextField(placeholder: String="", onChange:(String)->Unit={}, viewMo
     var keyBoardActions: KeyboardActions = KeyboardActions()
     val isEnabled: Boolean = true
     val focusManager = LocalFocusManager.current
+
     //Plain text keyboard
     keyBoardActions = KeyboardActions(
         onNext = {
@@ -47,6 +55,7 @@ fun SundroidTextField(placeholder: String="", onChange:(String)->Unit={}, viewMo
         value = value,
         onValueChange =  onChange,
         leadingIcon = leadingIcon,
+        label = {Text(text= label)},
         textStyle = TextStyle(fontSize = 18.sp),
         keyboardOptions = KeyboardOptions(imeAction = imeAction, keyboardType = keyboardType),
         keyboardActions = keyBoardActions,
@@ -64,10 +73,11 @@ fun SundroidTextField(placeholder: String="", onChange:(String)->Unit={}, viewMo
 }
 
 
+
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SundroidTextArea(placeholder: String="", onChange:(String)->Unit={}, viewModel: SundroidViewModel, value: String){
+fun SundroidTextArea(placeholder: String="", onChange:(String)->Unit={}, viewModel: SundroidViewModel, value: String, label: String){
     val modifier: Modifier = Modifier
 
 
@@ -90,6 +100,7 @@ fun SundroidTextArea(placeholder: String="", onChange:(String)->Unit={}, viewMod
         value = value,
         onValueChange =  onChange,
         leadingIcon = leadingIcon,
+        label = {Text(label)},
         textStyle = TextStyle(fontSize = 18.sp),
         keyboardOptions = KeyboardOptions(imeAction = imeAction, keyboardType = keyboardType),
         keyboardActions = keyBoardActions,
@@ -118,21 +129,8 @@ fun SundroidTextArea(placeholder: String="", onChange:(String)->Unit={}, viewMod
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SundroidTextFieldAmount(placeholder: String="", onChange:(String)->Unit={}, viewModel: SundroidViewModel, value: Int){
+fun SundroidTextFieldAmount(placeholder: String="", onChange:(String)->Unit={}, viewModel: SundroidViewModel, value: Int, label: String ){
     val modifier: Modifier = Modifier
-
-
-
-
-
-
-
-
-
-
-
-
-
     val leadingIcon: @Composable (() -> Unit)? = null
     val imeAction: ImeAction = ImeAction.Next
     val keyboardType: KeyboardType = KeyboardType.Decimal
@@ -145,14 +143,11 @@ fun SundroidTextFieldAmount(placeholder: String="", onChange:(String)->Unit={}, 
             focusManager.moveFocus(FocusDirection.Down)
         }
     )
-
-
-
-
     OutlinedTextField(
         modifier = modifier.fillMaxWidth().padding(top = 10.dp),
         value =  if(value>0.0) value.toString() else{""},
         onValueChange =  onChange,
+        label = {Text(label)},
         leadingIcon = leadingIcon,
         textStyle = TextStyle(fontSize = 18.sp),
         keyboardOptions = KeyboardOptions(imeAction = imeAction, keyboardType = keyboardType),
