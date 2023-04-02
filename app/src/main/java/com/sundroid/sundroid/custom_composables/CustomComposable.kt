@@ -1,6 +1,8 @@
 package com.sundroid.sundroid.custom_composables
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -12,6 +14,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sundroid.sundroid.R
@@ -32,8 +35,7 @@ fun SplashScreenText(text: String, visibility: Boolean){
         Font(R.font.tilt_warp, FontWeight.Bold, FontStyle.Italic),
     )
     AnimatedVisibility(visible = visibility) {
-
-        Text(text = text, modifier = modifier, color = color, fontSize = textFontSize, fontFamily = tilt, fontWeight = FontWeight.Bold)
+        SundroidTextHeader(text = text)
 
     }
 }
@@ -41,23 +43,24 @@ fun SplashScreenText(text: String, visibility: Boolean){
 @Composable
 fun SundroidButton(onClick: ()->Unit, text: String){
  Button(onClick = onClick, shape = MaterialTheme.shapes.small) {
-     Text(text = text, style = MaterialTheme.typography.labelSmall)
+     SundroidText(text = text)
  }
 }
 @Composable
-fun SundroidTextHeader(text: String){
+fun SundroidButtonLarge(onClick: ()->Unit, text: String){
+    Button(onClick = onClick, modifier = Modifier.fillMaxWidth().padding(10.dp)) {
+        SundroidText(text = text)
+    }
+}
+@Composable
+fun SundroidTextHeader(text: String, align: TextAlign?=TextAlign.Start, modifier: Modifier? = Modifier){
 
     val tilt = FontFamily(
         Font(R.font.tilt_neon),
         Font(R.font.tilt_warp, FontWeight.Bold),
         Font(R.font.tilt_warp, FontWeight.Bold, FontStyle.Italic),
     )
-    val kanit = FontFamily(
-        Font(R.font.kanit_extrabold),
-        Font(R.font.kanit_bold),
-        Font(R.font.kanit_medium),
-    )
-    Text(text = text, style = TextStyle(fontSize = 18.sp, fontFamily = tilt, fontWeight = FontWeight.Bold ))
+    Text(text = text, style = TextStyle(fontSize = 18.sp, fontFamily = tilt, fontWeight = FontWeight.Bold, textAlign = TextAlign.End ))
 }
 @Composable
 fun SundroidText(text: String){
@@ -119,7 +122,7 @@ fun DisplayLocalDate(modifier: Modifier, text: String) {
         Font(R.font.kanit_bold),
         Font(R.font.kanit_medium),
     )
-    Text(text =  formattedDateTime , style = TextStyle(fontSize = 13.sp, fontFamily = tilt))
+    Text(text =  formattedDateTime , style = TextStyle(fontSize = 13.sp, fontFamily = tilt), textAlign = TextAlign.Right, modifier = modifier)
 
 }
 fun formatCurrency(amount: String): String{

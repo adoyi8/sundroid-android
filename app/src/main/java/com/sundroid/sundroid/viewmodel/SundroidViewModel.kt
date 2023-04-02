@@ -35,6 +35,7 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     @OptIn(ExperimentalMaterialApi::class)
     val bottomSheetState = mutableStateOf<ModalBottomSheetState>(ModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden))
     var currentUser =  mutableStateOf<RoomUserEntity>(RoomUserEntity(1,"","","","","","",""));
+    var currentJob =  mutableStateOf<Job>(Job());
 
     val jobFormState: JobFormState = JobFormState();
     val shopFormState = ShopFormState();

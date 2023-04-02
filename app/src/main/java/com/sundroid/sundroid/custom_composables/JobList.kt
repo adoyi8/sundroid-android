@@ -15,10 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
@@ -60,53 +57,52 @@ fun JobList(
 fun MyCard(job: Job, viewModel: SundroidViewModel, modifier: Modifier) {
     var onClick: () -> Unit = {
         viewModel.bottomSheetAction.value = BottomSheetAction.UPDATE_JOB
+        viewModel.currentJob.value = job
         viewModel.jobFormState.convertToFormState(job)
         viewModel.showBottomSheet()
     }
-    val tilt = FontFamily(
-        Font(R.font.tilt_neon),
-        Font(R.font.tilt_warp, FontWeight.Bold),
-        Font(R.font.tilt_warp, FontWeight.Bold, FontStyle.Italic),
-    )
-    val kanit = FontFamily(
-        Font(R.font.kanit_extrabold),
-        Font(R.font.kanit_bold),
-        Font(R.font.kanit_medium),
-    )
 
     Card(
         modifier = modifier
-            .padding(5.dp)
             .fillMaxWidth()
+            .padding(8.dp)
             .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 9.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
     ) {
+   Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+
+
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                ,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Box(Modifier.widthIn(max = 200.dp)) {
+                SundroidTextHeader(text = job.customerName, modifier = Modifier.align(Alignment.CenterStart), align = TextAlign.Left)
+            }
+            Box() {
+                com.sundroid.sundroid.custom_composables.SundroidTextHeader(
+                    text = formatCurrency(
+                        job.amount.toString()
+                    ), align  = TextAlign.Right, modifier = Modifier.align(Alignment.CenterEnd)
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+            ,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
-                modifier = Modifier
-                    .padding(start = 16.dp,end=16.dp)
             ) {
-                job.customerName?.let {
-                    Surface(
-                        color = Color.Transparent,
-                        tonalElevation = 8.dp,
-                        modifier = Modifier.width(250.dp)
-                    ) {
-                        SundroidTextKanitBold(
-                            text = it,
-                        )
-                    }
-
-                }
-                Spacer(modifier = Modifier.height(8.dp))
                 job.description?.let {
                     Surface(
                         color = Color.Transparent,
                         tonalElevation = 8.dp,
-                        modifier = Modifier.width(250.dp)
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         SundroidText(
                             text = it,
@@ -115,33 +111,27 @@ fun MyCard(job: Job, viewModel: SundroidViewModel, modifier: Modifier) {
                 }
 
             }
-
-            Column() {
-                SundroidTextAmount(
-                    text = job.amount.toString()
-                )
-
-
-            }
         }
         Spacer(modifier = Modifier.height(20.dp))
         Row(
             modifier = Modifier
-                .fillMaxWidth().padding(start =  16.dp, end = 16.dp, bottom = 10.dp)
-                .height(20.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth()
+                ,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(modifier = Modifier.weight(5f)){
+            Row() {
                 StatusView(R.drawable.ic_sync_status, job.syncStatus, modifier = Modifier)
                 StatusView(R.drawable.ic_payment_status, job.paymentStatus, modifier = Modifier)
                 StatusView(R.drawable.ic_done, job.doneStatus, modifier = Modifier)
                 StatusView(R.drawable.ic_delivered, job.deliveredStatus, modifier = Modifier)
             }
-            Spacer(modifier = Modifier.weight(8f))
 
-            DisplayLocalDate(modifier = Modifier.weight(8f), job.timeReceived)
+             Box() {
+                 DisplayLocalDate(modifier = Modifier.align(Alignment.CenterEnd), job.timeReceived)
+             }
         }
     }
+}
 }
 
 
@@ -152,7 +142,7 @@ fun StatusView(icon: Int, state: Boolean, modifier: Modifier) {
         contentDescription = "Hello",
         colorFilter = getColorFilter(state),
         modifier = modifier
-            .width(15.dp)
+            .width(25.dp)
             .padding(1.dp)
     )
 }
@@ -164,5 +154,5 @@ class MyListProvider : PreviewParameterProvider<ArrayList<Job>> {
 }
 
 fun getColorFilter(state: Boolean): ColorFilter {
-    return if (state) ColorFilter.tint(Color.Green) else ColorFilter.tint(Color.Gray)
+    return if (state) ColorFilter.tint(Color(0xFF4FB6EC)) else ColorFilter.tint(Color.Gray)
 }

@@ -67,7 +67,6 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberAnimatedNavController()
                     val bottomNavigationItems = listOf(
-                        Screen.Home,
                         Screen.Jobs,
                         Screen.StaffScreen
                     )
@@ -191,6 +190,7 @@ class MainActivity : ComponentActivity() {
                                                 var onClick: () -> Unit = {
                                                     viewModel.bottomSheetAction.value =
                                                         BottomSheetAction.ADD_JOB
+                                                        viewModel.jobFormState.clearForm()
 
                                                     scope.launch {
                                                         sheetState.show()
