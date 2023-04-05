@@ -195,10 +195,9 @@ private fun FinalScoreDialog(
 @Composable
 fun GameScreenPreview() {
     var a = 5
-    a= 5
-    a= 5
+        a = 5
 
-
+    
     SundroidTheme{
         GameScreen()
     }
