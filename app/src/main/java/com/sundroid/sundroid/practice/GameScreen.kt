@@ -198,6 +198,14 @@ fun GameScreenPreview() {
     a = 5
     a = 5
     a = 5
+    a = 5
+    a = 5
+    a = 5
+    a = 5
+    a = 5
+    a = 5
+    a = 5
+    a = 5
 
 
 
