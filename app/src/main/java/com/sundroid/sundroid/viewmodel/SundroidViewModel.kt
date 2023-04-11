@@ -7,12 +7,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sundroid.sundroid.data.local.dao.SundroidLocalDatabase
 import com.sundroid.sundroid.data.local.dao.database_models.Job
 import com.sundroid.sundroid.data.local.dao.database_models.RoomUserEntity
 import com.sundroid.sundroid.data.local.dao.database_models.Shop
 import com.sundroid.sundroid.data.local.dao.database_models.Staff
+import com.sundroid.sundroid.data.network.SundroidApi
 import com.sundroid.sundroid.models.BottomSheetAction
 import com.sundroid.sundroid.models.JobFormState
 import com.sundroid.sundroid.models.ShopFormState
@@ -45,6 +48,33 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     val jobs: Flow<List<Job>> = sundroidRepository.jobs
     val shops: Flow<List<Shop>> = sundroidRepository.shops
     val staff: Flow<List<Staff>> = sundroidRepository.staff
+    private val _status = MutableLiveData<String>()
+
+    // The external immutable LiveData for the request status
+    val status: LiveData<String> = _status
+    /**
+     * Call getMarsPhotos() on init so we can display status immediately.
+     */
+
+    init{
+        testConnection()
+    }
+     fun testConnection() {
+        viewModelScope.launch {
+            try {
+                println("Edsheeran start")
+                var body = HashMap<String,String>();
+               body.put("name","Sundroid2020@gmail.com")
+                val listResult = SundroidApi.retrofitService.login(body)
+               // val books = Json.decodeFromString<NetworkResponse>(listResult)
+                println("Edsheeran result ${listResult.welcome}")
+                _status.value = "Edsheeran: ${listResult} Mars photos retrieved"
+            } catch (e: Exception) {
+                _status.value = "Edsheeran Failure: ${e.message}"
+                println("Edsheeran exception ${e.message}")
+            }
+        }
+    }
     fun insertUser(user: RoomUserEntity) = viewModelScope.launch {
         sundroidRepository.deleteAllUsers()
         sundroidRepository.insertUser(user)

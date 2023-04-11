@@ -197,10 +197,18 @@ class MainActivity : ComponentActivity() {
                                                         viewModel.showBottomSheet()
                                                     }
                                                 }
+                                                var getInternetData: () -> Unit = {
+
+
+                                                    scope.launch {
+
+                                                        viewModel.testConnection()
+                                                    }
+                                                }
                                                 SundroidFAB(
                                                     R.drawable.ic_add,
                                                     "Add Job",
-                                                    onclick = onClick
+                                                    onclick = getInternetData
                                                 )
                                             } else if (currentRoute(navController = navController) == stringResource(
                                                     id = R.string.shop_screen
