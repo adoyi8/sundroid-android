@@ -16,6 +16,7 @@ import com.sundroid.sundroid.data.local.dao.database_models.RoomUserEntity
 import com.sundroid.sundroid.data.local.dao.database_models.Shop
 import com.sundroid.sundroid.data.local.dao.database_models.Staff
 import com.sundroid.sundroid.data.network.SundroidApi
+import com.sundroid.sundroid.data.network.model.LoginModel
 import com.sundroid.sundroid.models.BottomSheetAction
 import com.sundroid.sundroid.models.JobFormState
 import com.sundroid.sundroid.models.ShopFormState
@@ -59,6 +60,22 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     init{
         testConnection()
     }
+
+
+
+    fun login(loginModel: LoginModel) {
+        viewModelScope.launch {
+            try {
+                println("Edsheeran start")
+                var body = loginModel.getHashMap();
+                val listResult = SundroidApi.retrofitService.login(body)
+                // val books = Json.decodeFromString<NetworkResponse>(listResult)
+                _status.value = "Edsheeran: ${listResult} Mars photos retrieved"
+            } catch (e: Exception) {
+                _status.value = "Edsheeran Failure: ${e.message}"
+            }
+        }
+    }
      fun testConnection() {
         viewModelScope.launch {
             try {
@@ -92,7 +109,6 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
         isLoading = true;
         sundroidRepository.deleteAllUsers()
         println("delete all users called in sundroid viewmodel")
-
         isLoading= true
     }
     fun getCurrentUser() = viewModelScope.launch {
@@ -102,7 +118,6 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
             }
 
         }
-
     }
     fun logOut()  = viewModelScope.launch{
         println("Blessing 2 log out called in sundroid viewmodel")
