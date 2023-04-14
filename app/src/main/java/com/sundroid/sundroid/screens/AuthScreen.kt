@@ -44,9 +44,9 @@ fun AuthScreen(navController: NavController, viewModel: SundroidViewModel
                                  val loginModel = LoginModel(email = account.email!!, firstName = account.givenName, lastName = account.familyName )
                                 viewModel.login(loginModel)
                              //   viewModel.insertUser(user)
-                                navController.navigate("dashboard_screen") {
-                                    popUpTo("auth_screen") { inclusive = true }
-                                }
+                             //   navController.navigate("dashboard_screen") {
+                               //     popUpTo("auth_screen") { inclusive = true }
+                            //    }
                             }
                         }
                     }

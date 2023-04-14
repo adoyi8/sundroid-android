@@ -36,6 +36,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.sundroid.sundroid.custom_composables.*
 import com.sundroid.sundroid.data.AuthScreen
+import com.sundroid.sundroid.data.network.model.LoginModel
 import com.sundroid.sundroid.google_auth.getGoogleSignInClient
 import com.sundroid.sundroid.models.BottomSheetAction
 import com.sundroid.sundroid.models.DrawerItem
@@ -188,9 +189,8 @@ class MainActivity : ComponentActivity() {
                                                 )
                                             ) {
                                                 var onClick: () -> Unit = {
-                                                    viewModel.bottomSheetAction.value =
-                                                        BottomSheetAction.ADD_JOB
-                                                        viewModel.jobFormState.clearForm()
+                                                    viewModel.bottomSheetAction.value = BottomSheetAction.ADD_JOB
+                                                    viewModel.jobFormState.clearForm()
 
                                                     scope.launch {
                                                         sheetState.show()
@@ -201,8 +201,9 @@ class MainActivity : ComponentActivity() {
 
 
                                                     scope.launch {
+                                                        val loginModel = LoginModel(email = "adegbesundayadoyi@gmail.com", firstName = "Sunday", lastName = "Adegbe")
 
-                                                        viewModel.testConnection()
+                                                        viewModel.login(loginModel)
                                                     }
                                                 }
                                                 SundroidFAB(

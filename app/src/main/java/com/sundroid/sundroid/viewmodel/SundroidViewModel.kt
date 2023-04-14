@@ -57,20 +57,28 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
      * Call getMarsPhotos() on init so we can display status immediately.
      */
 
-    init{
-        testConnection()
-    }
+
+
+
+
+
+
+
+
+
 
 
 
     fun login(loginModel: LoginModel) {
         viewModelScope.launch {
             try {
-                println("Edsheeran start")
+                println("Sam smith start")
                 var body = loginModel.getHashMap();
-                val listResult = SundroidApi.retrofitService.login(body)
+                println("sam smith body $body")
+                val response = SundroidApi.retrofitService.authenticate(body)
                 // val books = Json.decodeFromString<NetworkResponse>(listResult)
-                _status.value = "Edsheeran: ${listResult} Mars photos retrieved"
+                println("Sam Smith response ${response.body()?.token}")
+                _status.value = "Edsheeran: Mars photos retrieved"
             } catch (e: Exception) {
                 _status.value = "Edsheeran Failure: ${e.message}"
             }
@@ -84,7 +92,7 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
                body.put("name","Sundroid2020@gmail.com")
                 val listResult = SundroidApi.retrofitService.login(body)
                // val books = Json.decodeFromString<NetworkResponse>(listResult)
-                println("Edsheeran result ${listResult.welcome}")
+                println("Edsheeran result ${listResult.token}")
                 _status.value = "Edsheeran: ${listResult} Mars photos retrieved"
             } catch (e: Exception) {
                 _status.value = "Edsheeran Failure: ${e.message}"
