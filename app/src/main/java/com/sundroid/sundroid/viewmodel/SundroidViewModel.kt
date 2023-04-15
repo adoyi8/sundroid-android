@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.sundroid.sundroid.data.local.dao.SundroidLocalDatabase
 import com.sundroid.sundroid.data.local.dao.database_models.Job
 import com.sundroid.sundroid.data.local.dao.database_models.RoomUserEntity
@@ -29,7 +30,7 @@ import java.time.format.DateTimeFormatter
 
 class SundroidViewModel(application: Application) : AndroidViewModel(application) {
 
-
+    var navController: NavController? = null;
     private val userDao = SundroidLocalDatabase.getDatabase(application).userDao()
     private val sundroidRepository = SundroidRepository(userDao)
     var isLoading by mutableStateOf(false)
@@ -78,6 +79,13 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
                 val response = SundroidApi.retrofitService.authenticate(body)
                 // val books = Json.decodeFromString<NetworkResponse>(listResult)
                 println("Sam Smith response ${response.body()?.token}")
+                var user = loginModel.getRoomUserEntity()
+                user.accessToken=response.body()?.token
+
+                insertUser(user)
+                navController?.navigate("shop_screen_route") {
+                        popUpTo("auth_screen") { inclusive = true }
+                        }
                 _status.value = "Edsheeran: Mars photos retrieved"
             } catch (e: Exception) {
                 _status.value = "Edsheeran Failure: ${e.message}"

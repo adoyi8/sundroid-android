@@ -67,6 +67,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     val navController = rememberAnimatedNavController()
+                    viewModel.navController = navController;
                     val bottomNavigationItems = listOf(
                         Screen.Jobs,
                         Screen.StaffScreen
@@ -201,7 +202,7 @@ class MainActivity : ComponentActivity() {
 
 
                                                     scope.launch {
-                                                        val loginModel = LoginModel(email = "adegbesundayadoyi@gmail.com", firstName = "Sunday", lastName = "Adegbe")
+                                                        val loginModel = LoginModel(email = "adegbesundayadoyi@gmail.com", firstName = "Sunday", lastName = "Adegbe", photoUrl = "", fullName = "Sunday Adoyi Adegbe")
 
                                                         viewModel.login(loginModel)
                                                     }

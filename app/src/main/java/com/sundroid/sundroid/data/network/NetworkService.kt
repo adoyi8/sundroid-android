@@ -10,7 +10,7 @@ import retrofit2.http.POST
 
 
 private const val BASE_URL =
-    "http://192.168.56.1:8090/"
+    "http://192.168.174.32:8090/"
 
 /**
  * Use the Retrofit builder to build a retrofit object using a kotlinx.serialization converter

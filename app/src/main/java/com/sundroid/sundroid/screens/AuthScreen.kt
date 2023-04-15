@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -17,6 +18,7 @@ import com.sundroid.sundroid.R
 import com.sundroid.sundroid.data.local.dao.database_models.RoomUserEntity
 import com.sundroid.sundroid.data.network.model.LoginModel
 import com.sundroid.sundroid.google_auth.AuthResultContract
+import com.sundroid.sundroid.google_auth.getGoogleSignInClient
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
 import kotlinx.coroutines.launch
 
@@ -40,8 +42,8 @@ fun AuthScreen(navController: NavController, viewModel: SundroidViewModel
                         account.email?.let {
                             account.displayName?.let { it1 ->
 
-                                val user = RoomUserEntity(email = account.email!!, displayName = account.displayName, familyName = account.familyName, givenName = account.givenName,idToken= account.idToken,photoUrl = account.photoUrl.toString(),serverAuthCode= account.serverAuthCode)
-                                 val loginModel = LoginModel(email = account.email!!, firstName = account.givenName, lastName = account.familyName )
+                                val user = RoomUserEntity(email = account.email!!, displayName = account.displayName, familyName = account.familyName, givenName = account.givenName, accessToken =  account.idToken,photoUrl = account.photoUrl.toString(),serverAuthCode= account.serverAuthCode)
+                                 val loginModel = LoginModel(email = account.email!!, firstName = account.givenName, lastName = account.familyName, photoUrl = account.photoUrl.toString(), fullName = account.displayName)
                                 viewModel.login(loginModel)
                              //   viewModel.insertUser(user)
                              //   navController.navigate("dashboard_screen") {
@@ -60,6 +62,7 @@ fun AuthScreen(navController: NavController, viewModel: SundroidViewModel
         errorText = text,
         onClick = {
             text = null
+
             authResultLauncher.launch(signInRequestCode)
         }
     )
@@ -75,7 +78,7 @@ fun AuthView(
     onClick: () -> Unit
 ) {
     var isLoading by remember { mutableStateOf(false) }
-
+   val logout= getGoogleSignInClient(LocalContext.current).signOut()
     Scaffold {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -89,12 +92,14 @@ fun AuthView(
                 icon = painterResource(id = R.drawable.google_sign_in),
                 onClick = {
                     isLoading = true
+                    logout
                     onClick()
                 }
             )
 
             errorText?.let {
                 isLoading = false
+                getGoogleSignInClient(LocalContext.current).signOut()
                 Spacer(modifier = Modifier.height(30.dp))
                 Text(text = it)
             }

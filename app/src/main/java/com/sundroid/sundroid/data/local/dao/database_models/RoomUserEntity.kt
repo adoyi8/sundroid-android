@@ -19,14 +19,14 @@ import androidx.room.PrimaryKey
 
 
 
-data class RoomUserEntity @JvmOverloads constructor( @PrimaryKey(autoGenerate = true) val id: Int = 0,
-                                                     val email: String = "",
-                                                     val displayName: String?,
-                                                     val familyName: String?,
-                                                     val givenName: String?,
-                                                     val idToken: String?,
-                                                     val photoUrl: String?,
-                                                     val serverAuthCode: String?)
+data class RoomUserEntity @JvmOverloads constructor(@PrimaryKey(autoGenerate = true) val id: Int = 0,
+                                                    val email: String = "",
+                                                    val displayName: String?,
+                                                    val familyName: String?,
+                                                    val givenName: String?,
+                                                    var accessToken: String?,
+                                                    val photoUrl: String?,
+                                                    val serverAuthCode: String?)
 
 
 
