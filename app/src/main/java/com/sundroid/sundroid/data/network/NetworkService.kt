@@ -1,6 +1,6 @@
 package com.sundroid.sundroid.data.network
 
-import com.sundroid.sundroid.data.network.model.NetworkResponse
+import com.sundroid.sundroid.data.network.model.LoginResponse
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -25,14 +25,14 @@ private val retrofit = Retrofit.Builder()
  */
 interface SundroidApiService {
     @GET("home")
-    suspend fun testConnection():NetworkResponse
+    suspend fun testConnection():LoginResponse
 
 
     @POST("login")
-    suspend fun login(@Body body:HashMap<String, String>):NetworkResponse
+    suspend fun login(@Body body:HashMap<String, String>):LoginResponse
 
     @POST("authenticate")
-    suspend fun authenticate(@Body body:HashMap<String, String>): Response<NetworkResponse>
+    suspend fun authenticate(@Body body:HashMap<String, String>): Response<LoginResponse>
 }
 
 /**

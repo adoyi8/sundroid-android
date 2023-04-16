@@ -18,6 +18,7 @@ import com.sundroid.sundroid.data.local.dao.database_models.Shop
 import com.sundroid.sundroid.data.local.dao.database_models.Staff
 import com.sundroid.sundroid.data.network.SundroidApi
 import com.sundroid.sundroid.data.network.model.LoginModel
+import com.sundroid.sundroid.data.network.model.LoginResponse
 import com.sundroid.sundroid.models.BottomSheetAction
 import com.sundroid.sundroid.models.JobFormState
 import com.sundroid.sundroid.models.ShopFormState
@@ -25,6 +26,9 @@ import com.sundroid.sundroid.models.StaffFormState
 import com.sundroid.sundroid.repositories.SundroidRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody
+import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -48,6 +52,11 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     var appBarTitle by mutableStateOf("Sundroid")
     val users: Flow<List<RoomUserEntity>> = sundroidRepository.users
     val jobs: Flow<List<Job>> = sundroidRepository.jobs
+    var i  = "{\"token\": \"not available\"}";
+    var loginResponse =  mutableStateOf<Response<LoginResponse>>(retrofit2.Response.error(1000,
+       ResponseBody.create("application/json".toMediaTypeOrNull(),i )
+    )
+    )
     val shops: Flow<List<Shop>> = sundroidRepository.shops
     val staff: Flow<List<Staff>> = sundroidRepository.staff
     private val _status = MutableLiveData<String>()
@@ -70,27 +79,22 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
 
 
 
-    fun login(loginModel: LoginModel) {
-        viewModelScope.launch {
-            try {
-                println("Sam smith start")
-                var body = loginModel.getHashMap();
-                println("sam smith body $body")
-                val response = SundroidApi.retrofitService.authenticate(body)
-                // val books = Json.decodeFromString<NetworkResponse>(listResult)
-                println("Sam Smith response ${response.body()?.token}")
-                var user = loginModel.getRoomUserEntity()
-                user.accessToken=response.body()?.token
 
-                insertUser(user)
-                navController?.navigate("shop_screen_route") {
-                        popUpTo("auth_screen") { inclusive = true }
-                        }
-                _status.value = "Edsheeran: Mars photos retrieved"
-            } catch (e: Exception) {
-                _status.value = "Edsheeran Failure: ${e.message}"
-            }
+
+
+
+
+    fun login(loginModel: LoginModel)  {
+
+
+       viewModelScope.launch {
+
+                loginResponse.value = sundroidRepository.login(loginModel = loginModel)
+           println("hakimi 4"+ loginResponse)
+
         }
+
+
     }
      fun testConnection() {
         viewModelScope.launch {

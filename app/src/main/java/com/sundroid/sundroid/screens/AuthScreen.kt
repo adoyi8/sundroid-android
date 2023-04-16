@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.android.gms.common.api.ApiException
 import com.sundroid.sundroid.R
-import com.sundroid.sundroid.data.local.dao.database_models.RoomUserEntity
 import com.sundroid.sundroid.data.network.model.LoginModel
 import com.sundroid.sundroid.google_auth.AuthResultContract
 import com.sundroid.sundroid.google_auth.getGoogleSignInClient
@@ -23,7 +22,8 @@ import com.sundroid.sundroid.viewmodel.SundroidViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun AuthScreen(navController: NavController, viewModel: SundroidViewModel
+fun AuthScreen(
+    navController: NavController, viewModel: SundroidViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()
     var text by remember { mutableStateOf<String?>(null) }
@@ -42,13 +42,16 @@ fun AuthScreen(navController: NavController, viewModel: SundroidViewModel
                         account.email?.let {
                             account.displayName?.let { it1 ->
 
-                                val user = RoomUserEntity(email = account.email!!, displayName = account.displayName, familyName = account.familyName, givenName = account.givenName, accessToken =  account.idToken,photoUrl = account.photoUrl.toString(),serverAuthCode= account.serverAuthCode)
-                                 val loginModel = LoginModel(email = account.email!!, firstName = account.givenName, lastName = account.familyName, photoUrl = account.photoUrl.toString(), fullName = account.displayName)
-                                viewModel.login(loginModel)
-                             //   viewModel.insertUser(user)
-                             //   navController.navigate("dashboard_screen") {
-                               //     popUpTo("auth_screen") { inclusive = true }
-                            //    }
+                                //  val user = RoomUserEntity(email = account.email!!, displayName = account.displayName, familyName = account.familyName, givenName = account.givenName, accessToken =  account.idToken,photoUrl = account.photoUrl.toString(),serverAuthCode= account.serverAuthCode)
+                                val loginModel = LoginModel(
+                                    email = account.email!!,
+                                    firstName = account.givenName,
+                                    lastName = account.familyName,
+                                    photoUrl = account.photoUrl.toString(),
+                                    fullName = account.displayName
+                                )
+                                val result = viewModel.login(loginModel)
+                                
                             }
                         }
                     }
@@ -62,9 +65,8 @@ fun AuthScreen(navController: NavController, viewModel: SundroidViewModel
         errorText = text,
         onClick = {
             text = null
-
             authResultLauncher.launch(signInRequestCode)
-        }
+        }, viewModel = viewModel, navController=navController
     )
 
 }
@@ -75,10 +77,10 @@ fun AuthScreen(navController: NavController, viewModel: SundroidViewModel
 @Composable
 fun AuthView(
     errorText: String?,
-    onClick: () -> Unit
+    onClick: () -> Unit, viewModel: SundroidViewModel, navController: NavController
 ) {
     var isLoading by remember { mutableStateOf(false) }
-   val logout= getGoogleSignInClient(LocalContext.current).signOut()
+    val logout = getGoogleSignInClient(LocalContext.current).signOut()
     Scaffold {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -92,7 +94,6 @@ fun AuthView(
                 icon = painterResource(id = R.drawable.google_sign_in),
                 onClick = {
                     isLoading = true
-                    logout
                     onClick()
                 }
             )
@@ -103,6 +104,12 @@ fun AuthView(
                 Spacer(modifier = Modifier.height(30.dp))
                 Text(text = it)
             }
+            if(viewModel.loginResponse.value.isSuccessful){
+                navController.navigate("dashboard_screen") {
+                    popUpTo("auth_screen") { inclusive = true }
+                }
+            }
+
         }
     }
 }
