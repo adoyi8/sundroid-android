@@ -90,4 +90,21 @@ class SundroidRepository(private val sundroidDao: SundroidDao) {
 
         }
 
+    suspend fun addJobApi(job: Job) : Response<Job>{
+        println("Sam smith start")
+        var body = job.getHashMap();
+        println("sam smith body $body")
+        val response = SundroidApi.retrofitService.addJob(body)
+        // val books = Json.decodeFromString<NetworkResponse>(listResult)
+        println("Sam Smith response ${response.body()?.customerName}")
+        if(response.isSuccessful){
+         //   var user = loginModel.getRoomUserEntity()
+           // user.accessToken=response.body()?.token
+           // insertUser(user)
+        }
+
+        return response
+
+    }
+
 }

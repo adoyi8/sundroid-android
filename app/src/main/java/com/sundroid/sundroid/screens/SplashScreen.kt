@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.sundroid.sundroid.custom_composables.SplashScreenText
+import com.sundroid.sundroid.data.local.dao.database_models.RoomUserEntity
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
 import kotlinx.coroutines.delay
 
@@ -69,14 +70,16 @@ fun SplashScreen(navController: NavController, viewModel: SundroidViewModel) {
             delay(500)
 
          viewModel.users.collect {
-            if(it.isEmpty()) {
+         //   if(it.isEmpty()) {
+                if(false) {
                 navController.navigate("auth_screen") {
                     popUpTo("splash_screen") { inclusive = true }
 
                 }
             }
             else{
-
+                viewModel.deleteAllJobs()
+                 viewModel.insertUser(RoomUserEntity(email = "adegbesundayadoyi@gmail.com", displayName = "Sunday Adegbe", familyName = "Adegbe", givenName = "Sunday", photoUrl = "", accessToken = "", serverAuthCode = ""))
                 navController.navigate("dashboard_screen") {
                     popUpTo("splash_screen") { inclusive = true }
 

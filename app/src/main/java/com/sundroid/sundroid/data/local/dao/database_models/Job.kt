@@ -6,16 +6,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-
-
-
-
-
-
-
-
-
-
 @Entity(tableName = "job")
 data class Job
 @JvmOverloads constructor(@PrimaryKey(autoGenerate = true) var jobId: Int=0,
@@ -63,5 +53,45 @@ data class Job
             jobs.add(job)
             return jobs
         }
+    }
+    fun getHashMap(): HashMap<String, Any>{
+        var map = HashMap<String, Any>();
+        customerName?.let {
+            map.put("customerName", customerName!!);
+        }
+        customerEmail?.let {
+            map.put("customerEmail",  customerEmail!!);
+        }
+        timeReceived.let {
+            map.put("timeReceived", timeReceived!!);
+        }
+        timeDelivered.let {
+            map.put("timeDelivered", timeDelivered!!);
+        }
+        description.let {
+            map.put("description", description!!);
+        }
+        paymentStatus.let {
+            map.put("paymentStatus", paymentStatus!!);
+        }
+        syncStatus.let {
+            map.put("syncStatus", syncStatus!!);
+        }
+        doneStatus.let {
+            map.put("doneStatus", doneStatus!!);
+        }
+        deliveredStatus.let {
+            map.put("deliveredStatus", deliveredStatus!!);
+        }
+        amount.let {
+            map.put("amount", amount!!);
+        }
+        jobId.let {
+            map.put("jobId", jobId!!);
+        }
+
+        return map;
+
+
     }
 }

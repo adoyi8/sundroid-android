@@ -1,4 +1,5 @@
 package com.sundroid.sundroid.viewmodel
+
 import android.app.Application
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
@@ -39,12 +40,14 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     private val sundroidRepository = SundroidRepository(userDao)
     var isLoading by mutableStateOf(false)
     var animateList by mutableStateOf(false)
-    val isError  = mutableStateOf(false)
+    val isError = mutableStateOf(false)
     var bottomSheetAction = mutableStateOf(BottomSheetAction.ADD_JOB)
+
     @OptIn(ExperimentalMaterialApi::class)
-    val bottomSheetState = mutableStateOf<ModalBottomSheetState>(ModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden))
-    var currentUser =  mutableStateOf<RoomUserEntity>(RoomUserEntity(1,"","","","","","",""));
-    var currentJob =  mutableStateOf<Job>(Job());
+    val bottomSheetState =
+        mutableStateOf<ModalBottomSheetState>(ModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden))
+    var currentUser = mutableStateOf<RoomUserEntity>(RoomUserEntity(1, "", "", "", "", "", "", ""));
+    var currentJob = mutableStateOf<Job>(Job());
 
     val jobFormState: JobFormState = JobFormState();
     val shopFormState = ShopFormState();
@@ -52,10 +55,12 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     var appBarTitle by mutableStateOf("Sundroid")
     val users: Flow<List<RoomUserEntity>> = sundroidRepository.users
     val jobs: Flow<List<Job>> = sundroidRepository.jobs
-    var i  = "{\"token\": \"not available\"}";
-    var loginResponse =  mutableStateOf<Response<LoginResponse>>(retrofit2.Response.error(1000,
-       ResponseBody.create("application/json".toMediaTypeOrNull(),i )
-    )
+    var i = "{\"token\": \"not available\"}";
+    var loginResponse = mutableStateOf<Response<LoginResponse>>(
+        retrofit2.Response.error(
+            1000,
+            ResponseBody.create("application/json".toMediaTypeOrNull(), i)
+        )
     )
     val shops: Flow<List<Shop>> = sundroidRepository.shops
     val staff: Flow<List<Staff>> = sundroidRepository.staff
@@ -63,47 +68,33 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
 
     // The external immutable LiveData for the request status
     val status: LiveData<String> = _status
+
     /**
      * Call getMarsPhotos() on init so we can display status immediately.
      */
 
 
+    fun login(loginModel: LoginModel) {
 
 
+        viewModelScope.launch {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    fun login(loginModel: LoginModel)  {
-
-
-       viewModelScope.launch {
-
-                loginResponse.value = sundroidRepository.login(loginModel = loginModel)
-           println("hakimi 4"+ loginResponse)
+            loginResponse.value = sundroidRepository.login(loginModel = loginModel)
+            println("hakimi 4" + loginResponse)
 
         }
 
 
     }
-     fun testConnection() {
+
+    fun testConnection() {
         viewModelScope.launch {
             try {
                 println("Edsheeran start")
-                var body = HashMap<String,String>();
-               body.put("name","Sundroid2020@gmail.com")
+                var body = HashMap<String, String>();
+                body.put("name", "Sundroid2020@gmail.com")
                 val listResult = SundroidApi.retrofitService.login(body)
-               // val books = Json.decodeFromString<NetworkResponse>(listResult)
+                // val books = Json.decodeFromString<NetworkResponse>(listResult)
                 println("Edsheeran result ${listResult.token}")
                 _status.value = "Edsheeran: ${listResult} Mars photos retrieved"
             } catch (e: Exception) {
@@ -112,11 +103,12 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
             }
         }
     }
+
     fun insertUser(user: RoomUserEntity) = viewModelScope.launch {
         sundroidRepository.deleteAllUsers()
         sundroidRepository.insertUser(user)
         val streamedUsers = users.collect {
-            if(it.isNotEmpty()) {
+            if (it.isNotEmpty()) {
                 currentUser.value = it.first()
             }
         }
@@ -125,43 +117,51 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     fun deleteUser(user: RoomUserEntity) = viewModelScope.launch {
         sundroidRepository.deleteUser(user)
     }
+
     fun deleteAllUsers() = viewModelScope.launch {
         isLoading = true;
         sundroidRepository.deleteAllUsers()
         println("delete all users called in sundroid viewmodel")
-        isLoading= true
+        isLoading = true
     }
+    fun deleteAllJobs() = viewModelScope.launch {
+        isLoading = true;
+        sundroidRepository.deleteAllJobs()
+        println("delete all jobs called in sundroid viewmodel")
+        isLoading = true
+    }
+
     fun getCurrentUser() = viewModelScope.launch {
         users.collect {
-            if(it.isNotEmpty()) {
+            if (it.isNotEmpty()) {
                 currentUser.value = it.first()
             }
 
         }
     }
-    fun logOut()  = viewModelScope.launch{
+
+    fun logOut() = viewModelScope.launch {
         println("Blessing 2 log out called in sundroid viewmodel")
         deleteAllUsers()
 
     }
 
 
-
-
-
-
-
-
-
-
-
-
     fun addJob() = viewModelScope.launch {
-        jobFormState.timeReceived.value = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        jobFormState.timeReceived.value =
+            LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
         sundroidRepository.insertJob(jobFormState.getJobFromFormState())
+        jobs.collect {
+            if (it.isNotEmpty() && !it.last().syncStatus) {
+                println("Droid Name"+ it.last().customerName)
+                println("Droid Id"+ it.last().jobId)
+                addJobApi(it.last())
+            }
+        }
         hideBottomSheet()
         jobFormState.clearForm()
     }
+
     fun addShop() = viewModelScope.launch {
         currentUser.value.email.let {
             shopFormState.owner.value = currentUser.value.email
@@ -173,18 +173,36 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
 
     @OptIn(ExperimentalMaterialApi::class)
     fun showBottomSheet() {
-        bottomSheetState.value = ModalBottomSheetState(initialValue =ModalBottomSheetValue.Expanded )
+        bottomSheetState.value =
+            ModalBottomSheetState(initialValue = ModalBottomSheetValue.Expanded)
     }
 
     // Call this method to hide the bottom sheet
     @OptIn(ExperimentalMaterialApi::class)
     fun hideBottomSheet() {
-        bottomSheetState.value = ModalBottomSheetState(initialValue =ModalBottomSheetValue.Hidden)
+        bottomSheetState.value = ModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     }
 
     fun updateJob() = viewModelScope.launch {
         sundroidRepository.updateJob(jobFormState.getJobFromFormState())
         hideBottomSheet()
         jobFormState.clearForm()
+    }
+
+    fun addJobApi(job: Job) {
+
+
+        viewModelScope.launch {
+
+            var response = sundroidRepository.addJobApi(job = job)
+            if(response.isSuccessful){
+                var returnedJob = response.body();
+                returnedJob?.syncStatus = true;
+                sundroidRepository.updateJob(returnedJob!!)
+            }
+
+        }
+
+
     }
 }

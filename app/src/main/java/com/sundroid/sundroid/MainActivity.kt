@@ -210,7 +210,7 @@ class MainActivity : ComponentActivity() {
                                                 SundroidFAB(
                                                     R.drawable.ic_add,
                                                     "Add Job",
-                                                    onclick = getInternetData
+                                                    onclick = onClick
                                                 )
                                             } else if (currentRoute(navController = navController) == stringResource(
                                                     id = R.string.shop_screen
