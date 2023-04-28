@@ -99,7 +99,6 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
                 _status.value = "Edsheeran: ${listResult} Mars photos retrieved"
             } catch (e: Exception) {
                 _status.value = "Edsheeran Failure: ${e.message}"
-                println("Edsheeran exception ${e.message}")
             }
         }
     }
@@ -121,13 +120,11 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     fun deleteAllUsers() = viewModelScope.launch {
         isLoading = true;
         sundroidRepository.deleteAllUsers()
-        println("delete all users called in sundroid viewmodel")
         isLoading = true
     }
     fun deleteAllJobs() = viewModelScope.launch {
         isLoading = true;
         sundroidRepository.deleteAllJobs()
-        println("delete all jobs called in sundroid viewmodel")
         isLoading = true
         isLoading = true
     }
@@ -142,7 +139,7 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun logOut() = viewModelScope.launch {
-        println("Blessing 2 log out called in sundroid viewmodel")
+        println("Blessing 2 log out called in sundroid view-model")
         deleteAllUsers()
 
     }
