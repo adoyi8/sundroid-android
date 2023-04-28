@@ -129,6 +129,7 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
         sundroidRepository.deleteAllJobs()
         println("delete all jobs called in sundroid viewmodel")
         isLoading = true
+        isLoading = true
     }
 
     fun getCurrentUser() = viewModelScope.launch {
