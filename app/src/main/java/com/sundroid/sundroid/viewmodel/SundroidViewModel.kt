@@ -32,9 +32,7 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
 class SundroidViewModel(application: Application) : AndroidViewModel(application) {
-
     var navController: NavController? = null;
     private val userDao = SundroidLocalDatabase.getDatabase(application).userDao()
     private val sundroidRepository = SundroidRepository(userDao)
@@ -42,13 +40,10 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     var animateList by mutableStateOf(false)
     val isError = mutableStateOf(false)
     var bottomSheetAction = mutableStateOf(BottomSheetAction.ADD_JOB)
-
     @OptIn(ExperimentalMaterialApi::class)
-    val bottomSheetState =
-        mutableStateOf<ModalBottomSheetState>(ModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden))
+    val bottomSheetState = mutableStateOf<ModalBottomSheetState>(ModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden))
     var currentUser = mutableStateOf<RoomUserEntity>(RoomUserEntity(1, "", "", "", "", "", "", ""));
     var currentJob = mutableStateOf<Job>(Job());
-
     val jobFormState: JobFormState = JobFormState();
     val shopFormState = ShopFormState();
     val staffFormState = StaffFormState();
@@ -65,15 +60,10 @@ class SundroidViewModel(application: Application) : AndroidViewModel(application
     val shops: Flow<List<Shop>> = sundroidRepository.shops
     val staff: Flow<List<Staff>> = sundroidRepository.staff
     private val _status = MutableLiveData<String>()
-
-    // The external immutable LiveData for the request status
     val status: LiveData<String> = _status
-
     /**
      * Call getMarsPhotos() on init so we can display status immediately.
      */
-
-
     fun login(loginModel: LoginModel) {
 
 
