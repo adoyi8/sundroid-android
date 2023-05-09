@@ -34,6 +34,7 @@ fun AuthScreen(
         rememberLauncherForActivityResult(contract = AuthResultContract()) { task ->
             try {
                 val account = task?.getResult(ApiException::class.java)
+                println("Satire" + account)
 
                 if (account == null) {
                     text = "Google sign in failed"
