@@ -7,7 +7,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.sundroid.sundroid.R
-import com.sundroid.sundroid.practice.Practice
 import com.sundroid.sundroid.viewmodel.SundroidViewModel
 
 
@@ -32,7 +31,7 @@ fun DashBoard(viewModel: SundroidViewModel, navController: NavController) {
 
     }}
         else{
-            Practice()
+
         }
 }
 
