@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package com.sundroid.sundroid.practice
-
 import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -218,7 +217,6 @@ fun GameScreenPreview() {
     a = 5
     a = 5
     a = 5
-
     SundroidTheme{
         GameScreen()
     }
