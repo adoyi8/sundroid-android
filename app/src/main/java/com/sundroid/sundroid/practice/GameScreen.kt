@@ -194,13 +194,10 @@ private fun FinalScoreDialog(
 
 
 
-
-
 @Preview(showBackground = true)
 @Composable
 fun GameScreenPreview() {
     var a = 5
-    a = 5
     a = 5
     a = 5
     a = 5
